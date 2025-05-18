@@ -1,0 +1,67 @@
+#include <stdint.h>
+#include <stdio.h>
+
+uint64_t current_cycle_count();
+
+int matmul_naive(int*, int*, int*, int, int, int);
+int matmul_upmem(int*, int*, int*, int, int, int);
+
+int mat1[{matsize}] = {{{mat1}}};
+int mat2[{matsize}] = {{{mat2}}};
+int mat_res[{matsize}];
+
+int main() {{
+
+    uint64_t naive_start = current_cycle_count();
+    matmul_naive(mat1, mat2, mat_res, 4, 4, 4);
+    uint64_t naive_end = current_cycle_count();
+
+    uint64_t upmem_start = current_cycle_count();
+    matmul_upmem(mat1, mat2, mat_res, 4, 4, 4);
+    uint64_t upmem_end = current_cycle_count();
+    
+    printf("NAIVE: %ld\nUPMEM: %ld\n", (naive_end-naive_start), (upmem_end-upmem_start));
+
+    return 0;
+}}
+
+uint64_t current_cycle_count() {{
+
+    uint32_t hi1, lo, hi2;
+
+    do {{
+        asm volatile("csrr %0, cycleh" : "=r"(hi1));
+        asm volatile("csrr %0, cycle"  : "=r"(lo));
+        asm volatile("csrr %0, cycleh" : "=r"(hi2));
+    }} while (hi1 != hi2);
+
+    uint64_t cycle = ((uint64_t)hi1 << 32) | lo;
+
+    return cycle;
+}}
+
+int matmul_naive(int* A, int* B, int *C, int rowa, int cola, int colb) {{
+
+    for(int i=0; i<rowa; i++) {{
+        for(int j=0; j<colb; j++) {{
+            C[i*colb+j] = 0;
+            for(int k=0; k<cola; k++)
+                C[i*colb+j] += A[i*cola+k] * B[k*colb+j]; 
+        }}
+    }}
+
+    return 0;
+}}
+
+int matmul_upmem(int* A, int* B, int *C, int rowa, int cola, int colb) {{
+
+    for(int i=0; i<rowa; i++) {{
+        for(int j=0; j<colb; j++) {{
+            C[i*colb+j] = 0;
+            for(int k=0; k<cola; k++)
+                C[i*colb+j] += A[i*cola+k] * B[k*colb+j]; 
+        }}
+    }}
+
+    return 0;
+}}
