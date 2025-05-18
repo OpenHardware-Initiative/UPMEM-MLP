@@ -1,7 +1,8 @@
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 
-uint64_t current_cycle_count();
+#include <perfcounter.h>
 
 int matmul_naive(int*, int*, int*, int, int, int);
 int matmul_upmem(int*, int*, int*, int, int, int);
@@ -12,32 +13,19 @@ int mat_res[{matsize}];
 
 int main() {{
 
-    uint64_t naive_start = current_cycle_count();
-    matmul_naive(mat1, mat2, mat_res, 4, 4, 4);
-    uint64_t naive_end = current_cycle_count();
+    perfcounter_config(COUNT_CYCLES, false);
 
-    uint64_t upmem_start = current_cycle_count();
+    perfcounter_t naive_start = perfcounter_get();
+    matmul_naive(mat1, mat2, mat_res, 4, 4, 4);
+    perfcounter_t naive_end = perfcounter_get();
+
+    perfcounter_t upmem_start = perfcounter_get();
     matmul_upmem(mat1, mat2, mat_res, 4, 4, 4);
-    uint64_t upmem_end = current_cycle_count();
+    perfcounter_t upmem_end = perfcounter_get();
     
     printf("NAIVE: %ld\nUPMEM: %ld\n", (naive_end-naive_start), (upmem_end-upmem_start));
 
     return 0;
-}}
-
-uint64_t current_cycle_count() {{
-
-    uint32_t hi1, lo, hi2;
-
-    do {{
-        asm volatile("csrr %0, cycleh" : "=r"(hi1));
-        asm volatile("csrr %0, cycle"  : "=r"(lo));
-        asm volatile("csrr %0, cycleh" : "=r"(hi2));
-    }} while (hi1 != hi2);
-
-    uint64_t cycle = ((uint64_t)hi1 << 32) | lo;
-
-    return cycle;
 }}
 
 int matmul_naive(int* A, int* B, int *C, int rowa, int cola, int colb) {{
