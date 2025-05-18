@@ -6,26 +6,43 @@
 
 int matmul_naive(int*, int*, int*, int, int, int);
 int matmul_upmem(int*, int*, int*, int, int, int);
+int is_eq(int*, int*, int);
 
 int mat1[{matsize}] = {{{mat1}}};
 int mat2[{matsize}] = {{{mat2}}};
-int mat_res[{matsize}];
+int mat_res_base[{matsize}];
+int mat_res_upmem[{matsize}];
+
 
 int main() {{
 
     perfcounter_config(COUNT_CYCLES, false);
 
     perfcounter_t naive_start = perfcounter_get();
-    matmul_naive(mat1, mat2, mat_res, 4, 4, 4);
+    matmul_naive(mat1, mat2, mat_res_base, 4, 4, 4);
     perfcounter_t naive_end = perfcounter_get();
 
     perfcounter_t upmem_start = perfcounter_get();
-    matmul_upmem(mat1, mat2, mat_res, 4, 4, 4);
+    matmul_upmem(mat1, mat2, mat_res_upmem, 4, 4, 4);
     perfcounter_t upmem_end = perfcounter_get();
     
     printf("NAIVE: %ld\nUPMEM: %ld\n", (naive_end-naive_start), (upmem_end-upmem_start));
 
+    printf("EQUALITY CHECK: ");
+    if(is_eq(mat_res_base, mat_res_upmem, 4*4))
+        printf("PASS\n");
+    else
+        printf("FAIL\n");
+    
     return 0;
+}}
+
+int is_eq(int* A, int* B, int numbytes) {{
+    int res = 1;
+    for(int i=0; i<numbytes; i++) {{
+        res &= (A[i] == B[i]);
+    }}
+    return res;
 }}
 
 int matmul_naive(int* A, int* B, int *C, int rowa, int cola, int colb) {{
