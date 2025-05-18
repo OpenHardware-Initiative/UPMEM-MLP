@@ -2,38 +2,47 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#include <barrier.h>
+#include <defs.h>
+#include <mutex.h>
 #include <perfcounter.h>
 
+#define MATRIXA_ROWCOUNT {matrixa_rowcount}
+#define MATRIXA_COLCOUNT {matrixa_colcount}
+#define MATRIXB_ROWCOUNT {matrixa_colcount}
+#define MATRIXB_COLCOUNT {matrixb_colcount}
+
+int is_eq(int*, int*, int);
 int matmul_naive(int*, int*, int*, int, int, int);
 int matmul_upmem(int*, int*, int*, int, int, int);
-int is_eq(int*, int*, int);
+int test();
 
-int mat1[{matsize}] = {{{mat1}}};
-int mat2[{matsize}] = {{{mat2}}};
-int mat_res_base[{matsize}];
-int mat_res_upmem[{matsize}];
+int mat1[MATRIXA_ROWCOUNT*MATRIXA_COLCOUNT] = {{{mat1}}};
+int mat2[MATRIXB_ROWCOUNT*MATRIXB_COLCOUNT] = {{{mat2}}};
+int mat_res_base[MATRIXA_ROWCOUNT*MATRIXB_COLCOUNT];
+int mat_res_upmem[MATRIXA_ROWCOUNT*MATRIXB_COLCOUNT];
 
+BARRIER_INIT(my_barrier, NR_TASKLETS);
+MUTEX_INIT(my_mutex);
 
 int main() {{
+    test();
 
-    perfcounter_config(COUNT_CYCLES, false);
+    barrier_wait(&my_barrier);
 
-    perfcounter_t naive_start = perfcounter_get();
-    matmul_naive(mat1, mat2, mat_res_base, 4, 4, 4);
-    perfcounter_t naive_end = perfcounter_get();
+    mutex_lock(my_mutex);
 
-    perfcounter_t upmem_start = perfcounter_get();
-    matmul_upmem(mat1, mat2, mat_res_upmem, 4, 4, 4);
-    perfcounter_t upmem_end = perfcounter_get();
-    
-    printf("NAIVE: %ld\nUPMEM: %ld\n", (naive_end-naive_start), (upmem_end-upmem_start));
+    if(me()==0) {{
+        
+        printf("EQUALITY CHECK: ");
+        if(is_eq(mat_res_base, mat_res_upmem, MATRIXA_ROWCOUNT*MATRIXB_COLCOUNT))
+            printf("PASS\n");
+        else
+            printf("FAIL\n");
+    }}
 
-    printf("EQUALITY CHECK: ");
-    if(is_eq(mat_res_base, mat_res_upmem, 4*4))
-        printf("PASS\n");
-    else
-        printf("FAIL\n");
-    
+    mutex_unlock(my_mutex);
+
     return 0;
 }}
 
@@ -60,13 +69,39 @@ int matmul_naive(int* A, int* B, int *C, int rowa, int cola, int colb) {{
 
 int matmul_upmem(int* A, int* B, int *C, int rowa, int cola, int colb) {{
 
-    for(int i=0; i<rowa; i++) {{
+    int chunk = (rowa/NR_TASKLETS);
+    int start_row = chunk * me();
+
+    for(int i=start_row; i<(start_row+chunk); i++) {{
         for(int j=0; j<colb; j++) {{
             C[i*colb+j] = 0;
             for(int k=0; k<cola; k++)
                 C[i*colb+j] += A[i*cola+k] * B[k*colb+j]; 
         }}
     }}
+
+    return 0;
+}}
+
+int test() {{
+
+    perfcounter_config(COUNT_CYCLES, false);
+    perfcounter_t naive_start, naive_end;
+
+    mutex_lock(my_mutex);
+    if(me()==0) {{
+        naive_start = perfcounter_get();
+        matmul_naive(mat1, mat2, mat_res_base, MATRIXA_ROWCOUNT, MATRIXA_COLCOUNT, MATRIXB_COLCOUNT);
+        naive_end = perfcounter_get();
+    }}
+    mutex_unlock(my_mutex);
+
+    perfcounter_t upmem_start = perfcounter_get();    
+    matmul_upmem(mat1, mat2, mat_res_upmem, MATRIXA_ROWCOUNT, MATRIXA_COLCOUNT, MATRIXB_COLCOUNT);
+    perfcounter_t upmem_end = perfcounter_get();
+    
+    if(me()==0)
+        printf("NAIVE: %ld\nUPMEM: %ld\n", (naive_end-naive_start), (upmem_end-upmem_start));
 
     return 0;
 }}

@@ -1,6 +1,6 @@
 CLANG = dpu-upmem-dpurte-clang
 SOURCE = matmul
-CFLAGS += -O0
+CFLAGS += -O0 -DNR_TASKLETS=16
 FILESTODELETE = matmul.c
 
 all:
