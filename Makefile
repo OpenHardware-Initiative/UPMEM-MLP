@@ -8,6 +8,7 @@ all:
 	for test in $$(seq 0 15); do \
 		$(CLANG) $(CFLAGS) -o dpu/dpu$$test/${SOURCE}.o dpu/dpu$$test/${SOURCE}.c; \
 	done
+	gcc --std=c99 host.c -o host.o `dpu-pkg-config --cflags --libs dpu`
 
 clean:
 	rm -rf *.o ${FILESTODELETE}
