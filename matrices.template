@@ -1,0 +1,9 @@
+#define MATRIXA_ROWCOUNT {matrixa_rowcount}
+#define MATRIXA_COLCOUNT {matrixa_colcount}
+#define MATRIXB_ROWCOUNT {matrixa_colcount}
+#define MATRIXB_COLCOUNT {matrixb_colcount}
+
+#define DPU_NR {dpu_nr}
+
+int mat1[MATRIXA_ROWCOUNT*MATRIXA_COLCOUNT] = {{{mat1}}};
+int mat2[MATRIXB_ROWCOUNT*MATRIXB_COLCOUNT] = {{{mat2}}};

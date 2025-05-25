@@ -7,18 +7,13 @@
 #include <mutex.h>
 #include <perfcounter.h>
 
-#define MATRIXA_ROWCOUNT {matrixa_rowcount}
-#define MATRIXA_COLCOUNT {matrixa_colcount}
-#define MATRIXB_ROWCOUNT {matrixa_colcount}
-#define MATRIXB_COLCOUNT {matrixb_colcount}
+#include "matrices.h"
 
 int is_eq(int*, int*, int);
 int matmul_naive(int*, int*, int*, int, int, int);
 int matmul_upmem(int*, int*, int*, int, int, int);
 int test();
 
-int mat1[MATRIXA_ROWCOUNT*MATRIXA_COLCOUNT] = {{{mat1}}};
-int mat2[MATRIXB_ROWCOUNT*MATRIXB_COLCOUNT] = {{{mat2}}};
 int mat_res_base[MATRIXA_ROWCOUNT*MATRIXB_COLCOUNT];
 int mat_res_upmem[MATRIXA_ROWCOUNT*MATRIXB_COLCOUNT];
 

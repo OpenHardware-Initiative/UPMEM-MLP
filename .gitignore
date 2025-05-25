@@ -1,2 +1,4 @@
 matmul.c
+matrices.h
+dpu/
 *.o
