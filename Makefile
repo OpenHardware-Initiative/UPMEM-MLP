@@ -14,4 +14,4 @@ clean:
 	rm -rf *.o ${FILESTODELETE}
 
 clean_all:
-	rm -rf *.o .vscode/ .cache/ .__pycache__/ 
+	rm -rf *.o .vscode/ .cache/ .__pycache__/ training_images.txt training_labels.txt
