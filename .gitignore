@@ -2,3 +2,5 @@ matmul.c
 matrices.h
 dpu/
 *.o
+training_images.txt
+training_labels.txt
