@@ -15,12 +15,12 @@ typedef struct {
 } NEURON;
 
 typedef struct {
-    int size;
+    int num_neurons;
     NEURON *n;
 } LAYER;
 
 typedef struct {
-    int inputs, layers;
+    int num_inputs, num_layers;
     LAYER *l;
 } NETWORK;
 
