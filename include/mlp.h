@@ -1,6 +1,7 @@
 #ifndef MLP_H
 #define MLP_H
 
+#include <math.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,6 +25,8 @@ typedef struct {
     LAYER *l;
 } NETWORK;
 
+double activation(double);
+double activation_derivative(double);
 NEURON *init_neuron(int);
 LAYER *init_layer(int, int);
 NETWORK *init_network(int, int, int*);

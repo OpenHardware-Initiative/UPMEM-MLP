@@ -16,6 +16,7 @@ foreach(TEST_SRC ${TEST_FILES})
 
     add_executable(${TEST_NAME} ${TEST_SRC} ${SRC_FILES})
     target_include_directories(${TEST_NAME} PRIVATE include)
+    target_link_libraries(${TEST_NAME} m)
 
     add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})
 endforeach()
