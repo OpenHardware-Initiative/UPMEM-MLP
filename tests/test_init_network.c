@@ -1,4 +1,3 @@
-#include "init_network.c"
 #include "mlp.h"
 
 int test_init_network()
@@ -34,9 +33,12 @@ int main()
     int test_pass_fail = test_init_network();
     
     if(test_pass_fail == 0)
+    {
         printf("FAIL\n");
-    else
-        printf("PASS\n");
-
+        return 1;
+    }
+        
+    printf("PASS\n");
     return 0;
+
 }

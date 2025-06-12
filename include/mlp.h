@@ -24,4 +24,8 @@ typedef struct {
     LAYER *l;
 } NETWORK;
 
+NEURON *init_neuron(int);
+NETWORK *init_network(int, int, int*);
+uint8_t **read_image_data(const char*, int*, int);
+
 #endif

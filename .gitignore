@@ -5,3 +5,4 @@ dpu/
 *.out
 training_images.txt
 training_labels.txt
+build

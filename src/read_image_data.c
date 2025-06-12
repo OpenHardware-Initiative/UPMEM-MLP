@@ -4,6 +4,8 @@
 #include <string.h>
 #include <sys/types.h>      // for size_t and ssize_t
 
+#include "mlp.h"
+
 uint8_t **read_image_data(const char* filename, int *ROWS, int COLS)
 {
     FILE *file = fopen(filename, "r");
