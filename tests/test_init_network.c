@@ -1,5 +1,5 @@
-#include "../init_network.c"
-#include "../mlp.h"
+#include "init_network.c"
+#include "mlp.h"
 
 int test_init_network()
 {

@@ -1,4 +1,4 @@
-#include "../read_image_data.c"
+#include "read_image_data.c"
 
 int test_read_image_data()
 {

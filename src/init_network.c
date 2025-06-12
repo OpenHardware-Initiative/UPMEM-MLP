@@ -1,4 +1,5 @@
 #include "init_neuron.c"
+#include "mlp.h"
 
 NETWORK *init_network(int num_inputs, int num_layers, int *num_neurons_per_layer)
 {

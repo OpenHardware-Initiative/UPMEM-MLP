@@ -1,5 +1,5 @@
-#include "../init_neuron.c"
-#include "../mlp.h"
+#include "init_neuron.c"
+#include "mlp.h"
 
 int test_init_neuron()
 {
