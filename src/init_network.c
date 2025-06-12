@@ -10,29 +10,20 @@ NETWORK *init_network(int num_inputs, int num_layers, int *num_neurons_per_layer
     // initialize i-th layer of the network n
     for(int i=0; i<num_layers; i++) 
     {
-        int neurons = num_neurons_per_layer[i];
+        int num_neurons_current_layer = num_neurons_per_layer[i];
 
         LAYER *current_layer = n->l+i;
 
-        current_layer->num_neurons = neurons;
-        current_layer->n = (NEURON *) malloc (sizeof(NEURON)*neurons);
+        int num_weights_per_neuron;
+        if(i == 0)
+            num_weights_per_neuron = n->num_inputs + 1;
+        else
+            num_weights_per_neuron = num_neurons_per_layer[i-1] + 1;
 
-        // initialize j-th neuron of the i-th layer
-        for(int j=0; j<neurons; j++)
-        {
-            NEURON *neuron = current_layer->n+j;
+        LAYER *temp = init_layer(num_neurons_current_layer, num_weights_per_neuron);
 
-            int num_weights;
-            if(i == 0)
-                num_weights = n->num_inputs + 1;
-            else
-                num_weights = num_neurons_per_layer[i-1] + 1;
-
-            NEURON *temp = init_neuron(num_weights);
-            neuron->num_weights = temp->num_weights;
-            neuron->w = temp->w;
-            neuron->lw = temp->lw;
-        }
+        current_layer->num_neurons = num_neurons_current_layer;
+        current_layer->n = temp->n;
     }
 
     return n;
