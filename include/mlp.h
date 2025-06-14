@@ -30,6 +30,8 @@ double activation_derivative(double);
 NEURON *init_neuron(int);
 LAYER *init_layer(int, int);
 NETWORK *init_network(int, int, int*);
+double *get_y(NETWORK*, int, double*);
+double *get_z(NETWORK*, int, double*);
 uint8_t **read_image_data(const char*, int*, int);
 
 #endif
