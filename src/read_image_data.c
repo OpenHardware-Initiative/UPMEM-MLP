@@ -6,7 +6,7 @@
 
 #include "mlp.h"
 
-uint8_t **read_image_data(const char* filename, int *ROWS, int COLS)
+uint8_t **read_image_data(const char* filename, int *num_rows, const int num_cols)
 {
     FILE *file = fopen(filename, "r");
     if(NULL == file)
@@ -16,7 +16,7 @@ uint8_t **read_image_data(const char* filename, int *ROWS, int COLS)
     }
 
     uint8_t **data = NULL;
-    *ROWS = 0;
+    *num_rows = 0;
 
     char *line = NULL;
     size_t line_size = 0;
@@ -27,15 +27,15 @@ uint8_t **read_image_data(const char* filename, int *ROWS, int COLS)
         // if(line[0] == "#")
         //     continue;
 
-        data = realloc(data, (*ROWS+1)*sizeof(uint8_t*));
+        data = realloc(data, (*num_rows+1)*sizeof(uint8_t*));
         if(NULL == data)
         {
             fprintf(stderr, "Error 10002\n");
             return NULL;
         }
 
-        data[*ROWS] = malloc(COLS*sizeof(uint8_t));
-        if(NULL == data[*ROWS])
+        data[*num_rows] = malloc(num_cols*sizeof(uint8_t));
+        if(NULL == data[*num_rows])
         {
             fprintf(stderr, "Error 10003\n");
             return NULL;
@@ -43,14 +43,14 @@ uint8_t **read_image_data(const char* filename, int *ROWS, int COLS)
 
         char *token = strtok(line, " ");
         int col = 0;
-        while(token && col<COLS)
+        while(token && col<num_cols)
         {
-            data[*ROWS][col] = strtoul(token, NULL, 10);
+            data[*num_rows][col] = strtoul(token, NULL, 10);
             token = strtok(NULL, " ");
             ++col;
         }
 
-        ++(*ROWS);
+        ++(*num_rows);
     }
 
     fclose(file);

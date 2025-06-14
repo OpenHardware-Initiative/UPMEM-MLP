@@ -25,14 +25,14 @@ typedef struct {
     LAYER *l;
 } NETWORK;
 
-double activation(double);
-double activation_derivative(double);
-NEURON *init_neuron(int);
-LAYER *init_layer(int, int);
-NETWORK *init_network(int, int, int*);
-double *get_y(NETWORK*, int, double*);
-double *get_z(NETWORK*, int, double*);
-uint8_t **read_image_data(const char*, int*, int);
-double sse(double*, double*, int);
+double activation(double x);
+double activation_derivative(double x);
+NEURON *init_neuron(int num_weights);
+LAYER *init_layer(int num_neurons, int num_weights_per_neuron);
+NETWORK *init_network(int num_inputs, int num_layers, int *num_inputs_per_layer);
+double *get_y(NETWORK *n, int layer_index, double *sample);
+double *get_z(NETWORK *n, int layer_index, double *sample);
+uint8_t **read_image_data(const char *filename, int *num_rows, const int num_cols);
+double sse(double *real, double *ideal, int length);
 
 #endif
