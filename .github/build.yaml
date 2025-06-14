@@ -1,0 +1,33 @@
+name: Unit Tests
+
+on: 
+  push:
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - name: Install dependencies
+        run: sudo apt update && sudo apt install -y build-essential
+
+      - name: Create build directory
+        run: mkdir build
+      
+      - name: Run CMake
+        working-directory: build
+        run: cmake ..
+
+      - name: Build
+        working-directory: build
+        run: make
+
+      - name: Run the tests
+        working-directory: build
+        run: make test
