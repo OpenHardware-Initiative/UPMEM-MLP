@@ -1,4 +1,5 @@
 #include "mlp.h"
+#include "test.h"
 
 int test_activation(double x)
 {
@@ -21,12 +22,5 @@ int main()
                         && test_activation(0)
                         && test_activation(1);
 
-    if (test_pass_fail == 0)
-    {
-        printf("FAIL\n");
-        return 1;
-    }
-
-    printf("PASS\n");
-    return 0;
+    TEST_PASS_FAIL(test_pass_fail)
 }
