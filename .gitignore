@@ -6,3 +6,4 @@ dpu/
 training_images.txt
 training_labels.txt
 build
+.vscode
