@@ -1,5 +1,7 @@
 #include "mlp.h"
 
+// samples -> get_z -> preactivation
+
 double *get_z(NETWORK *n, int layer_index, double *sample)
 {
     LAYER *current_layer = n->l+layer_index;
