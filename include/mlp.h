@@ -10,6 +10,8 @@
 #define EPSILON 0.0000005
 #define MOMENTUM 0.8
 
+extern unsigned int rseed;
+
 typedef struct {
     int num_weights;
     double *w, *lw;
@@ -27,6 +29,7 @@ typedef struct {
 
 double activation(double x);
 double activation_derivative(double x);
+double drand();
 NEURON *init_neuron(int num_weights);
 LAYER *init_layer(int num_neurons, int num_weights_per_neuron);
 NETWORK *init_network(int num_inputs, int num_layers, int *num_inputs_per_layer);
