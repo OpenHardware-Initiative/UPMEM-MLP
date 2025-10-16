@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define RATE 0.1
+#define LEARNING_RATE 0.1
 #define EPSILON 0.0000005
 #define MOMENTUM 0.8
 
@@ -38,5 +38,6 @@ double *get_y(NETWORK *n, int layer_index, double *sample);
 double *get_z(NETWORK *n, int layer_index, double *sample);
 uint8_t **read_image_data(const char *filename, int *num_rows, const int num_cols);
 double sse(double *real, double *ideal, int length);
+void update_weights(NETWORK *n, int layer_index, double *sample, double* delta, double* previous_y);
 
 #endif
