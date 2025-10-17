@@ -7,6 +7,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 include_directories(include)
 
 file(GLOB SRC_FILES src/*.c)
+list(REMOVE_ITEM SRC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/mlp.c")
 file(GLOB TEST_FILES tests/*.c)
 
 enable_testing()
