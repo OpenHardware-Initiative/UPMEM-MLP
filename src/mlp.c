@@ -3,6 +3,23 @@
 
 unsigned int rseed = 42;
 
+void print_double_matrix(double **addr, int nrows, int ncols)
+{
+    for(size_t i=0; i<nrows; ++i)
+    {
+        for(size_t j=0; j<ncols; ++j)
+            printf("%lf ", addr[i][j]);
+        printf("\n");
+    }
+}
+
+void print_double_vector(double *addr, int nrows)
+{
+    for(size_t i=0; i<nrows; ++i)
+        printf("%lf ", addr[i]);
+    printf("\n");
+}
+
 int main()
 {
     srand(rseed);
@@ -33,13 +50,11 @@ int main()
         labels[i] = label_data[i][0];
     }
 
+#ifdef DEBUG
     // print samples to check if all saved correctly
-    for(size_t i=0; i<5; ++i) {
-        for(size_t j=0; j<(NUM_FEATURES+1); ++j) {
-            printf("%lf ", samples[i][j]);
-        }
-        printf("\n");
-    }
+    print_double_matrix(samples, 2, NUM_FEATURES+1);
+    print_double_vector(labels, 5);
+#endif
 
     return 0;
 }
