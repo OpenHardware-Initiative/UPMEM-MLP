@@ -8,6 +8,7 @@ int main()
     srand(rseed);
 
     int rows;
+    int epoch = 0;
 
     int num_inputs = NUM_FEATURES;
     int num_layers = 5;
@@ -41,6 +42,46 @@ int main()
     print_double_matrix(samples, 2, NUM_FEATURES+1);
     print_double_matrix(labels, 5, NUM_LABELS);
 #endif
+
+    printf("Starting training...\n");
+
+    LAYER* last_layer = n->l+(n->num_layers-1);
+
+    while(1) {
+
+        double loss_delta = 0.0;
+        double loss_prev = 0.0;
+        double loss_new = 0.0;
+
+        for(int i=0; i<NUM_TRAIN_SAMPLES; ++i) {
+            double *Y = get_y(n, n->num_layers-1, samples[i]);
+            loss_prev += sse(Y, labels[i], last_layer->num_neurons) / (double)NUM_TRAIN_SAMPLES;
+        }
+
+        for(int i=0; i<NUM_TRAIN_SAMPLES; ++i) {
+            for(int j=n->num_layers-1; j>=0; --j) {
+                double *d = delta(n, samples[i], labels[i], j);
+                double *py = j ? get_y(n, j-1, samples[i]) : NULL;
+                update_weights(n, j, samples[i], d, py);
+            }
+        }
+
+        for(int i=0; i<NUM_TRAIN_SAMPLES; ++i) {
+            double *Y = get_y(n, n->num_layers-1, samples[i]);
+            loss_new += sse(Y, labels[i], last_layer->num_neurons) / (double)NUM_TRAIN_SAMPLES;
+        }
+
+        loss_delta = fabs(loss_new - loss_prev);
+
+        epoch++;
+
+        printf("Epoch %d --- loss_delta = %.8lf\n", epoch, loss_delta);
+
+        if(loss_delta < EPSILON)
+            break;
+    }
+
+    printf("\nEpochs total: %d\n", epoch);
 
     return 0;
 }
