@@ -16,7 +16,7 @@ int main()
     NETWORK *n = init_network(num_inputs, num_layers, num_neurons_per_layer);
 
     double **samples    = (double **) malloc (sizeof(double*)*NUM_TRAIN_SAMPLES);
-    double *labels      = (double *)  malloc (sizeof(double) *NUM_TRAIN_SAMPLES);
+    double **labels     = (double **) malloc (sizeof(double*)*NUM_TRAIN_SAMPLES);
 
     uint8_t **sample_data   = read_image_data(TRAINING_IMAGES_FILE, &rows, NUM_FEATURES);
     uint8_t **label_data    = read_image_data(TRAINING_LABELS_FILE, &rows, 1);
@@ -24,19 +24,22 @@ int main()
     // save data into `samples` and `labels`
     for(size_t i=0; i<NUM_TRAIN_SAMPLES; ++i) {
         *(samples+i)    = (double *) malloc (sizeof(double)*NUM_FEATURES);
+        *(labels+i)     = (double *) malloc (sizeof(double)*NUM_LABELS);
         
         samples[i][0] = -1.0;   // bias
         for(size_t j=1; j<(NUM_FEATURES+1); ++j) {
             samples[i][j] = sample_data[i][j];
         }
         
-        labels[i] = label_data[i][0];
+        for(size_t j=0; j<NUM_LABELS; ++j) {
+            labels[i][j] = label_data[i][0] == j;
+        }
     }
 
 #ifdef DEBUG
     // print samples to check if all saved correctly
     print_double_matrix(samples, 2, NUM_FEATURES+1);
-    print_double_vector(labels, 5);
+    print_double_matrix(labels, 5, NUM_LABELS);
 #endif
 
     return 0;
