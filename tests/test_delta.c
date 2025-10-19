@@ -32,7 +32,7 @@ int test_delta()
 
     for(int i=0; i<3; i++)
     {
-        test_pass_fail &= (d_last_layer[i] == 2 * activation_derivative(get_z(n, 1, samples)[i]));
+        test_pass_fail &= (d_last_layer[i] == (ideals[i] - get_y(n, 1, samples)[i]) * activation_derivative(get_z(n, 1, samples)[i]));
     }
 
     // test before-last layer delta
@@ -41,7 +41,7 @@ int test_delta()
 
     for(int i=0; i<3; i++)
     {
-        test_pass_fail &= (d_first_layer[i] == 3 * 2 * activation_derivative(get_z(n, 1, samples)[i]) * activation_derivative(get_z(n, 0, samples)[i]));
+        test_pass_fail &= (d_first_layer[i] == (d_last_layer[0] + d_last_layer[1] + d_last_layer[2]) * activation_derivative(get_z(n, 0, samples)[i]));
     }
 
     return test_pass_fail;

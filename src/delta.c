@@ -13,7 +13,7 @@ double *delta(NETWORK *n, double* sample, double* ideal, int layer_index)
         double *y = get_y(n, layer_index, sample);
 
         for(int i=0; i<layer_size; i++)
-            d[i] = (ideal[i] - sample[i]) * activation_derivative(z[i]);
+            d[i] = (ideal[i] - y[i]) * activation_derivative(z[i]);
         
     }
     else
