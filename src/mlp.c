@@ -38,12 +38,17 @@ int main()
     }
 
 #ifdef DEBUG
-    // print samples to check if all saved correctly
+    printf("PROGRAM RUN IN DEBUG MODE\n\n");
+
+    // print samples & labels to check if all is saved correctly into program memory
+    printf("Samples:\n");
     print_double_matrix(samples, 2, NUM_FEATURES+1);
+
+    printf("Labels:\n");
     print_double_matrix(labels, 5, NUM_LABELS);
-#endif
 
     printf("Starting training...\n");
+#endif
 
     LAYER* last_layer = n->l+(n->num_layers-1);
 
@@ -74,14 +79,16 @@ int main()
         loss_delta = fabs(loss_new - loss_prev);
 
         epoch++;
-
-        printf("Epoch %d --- loss_delta = %.8lf\n", epoch, loss_delta);
+        
+#ifdef DEBUG
+        printf("Epoch %d --- loss_delta = %.12lf\n", epoch, loss_delta);
+#endif
 
         if(loss_delta < EPSILON)
             break;
     }
 
-    printf("\nEpochs total: %d\n", epoch);
+    printf("Training complete in %d epochs\n", epoch);
 
     return 0;
 }
