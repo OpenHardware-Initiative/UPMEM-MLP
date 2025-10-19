@@ -40,7 +40,8 @@ uint8_t **read_image_data(const char *filename, int *num_rows, const int num_col
 double sse(double *real, double *ideal, int length);
 void update_weights(NETWORK *n, int layer_index, double *sample, double* delta, double* previous_y);
 
-// debug functions
+// utility functions
+void free_uint8_matrix(uint8_t **addr, int nrows);
 void print_double_matrix(double **addr, int nrows, int ncols);
 void print_double_vector(double *addr, int nrows);
 

@@ -7,7 +7,7 @@ int main()
 {
     srand(rseed);
 
-    int rows;
+    int sample_rows, label_rows;
     int epoch = 0;
 
     int num_inputs = NUM_FEATURES;
@@ -19,8 +19,8 @@ int main()
     double **samples    = (double **) malloc (sizeof(double*)*NUM_TRAIN_SAMPLES);
     double **labels     = (double **) malloc (sizeof(double*)*NUM_TRAIN_SAMPLES);
 
-    uint8_t **sample_data   = read_image_data(TRAINING_IMAGES_FILE, &rows, NUM_FEATURES);
-    uint8_t **label_data    = read_image_data(TRAINING_LABELS_FILE, &rows, 1);
+    uint8_t **sample_data   = read_image_data(TRAINING_IMAGES_FILE, &sample_rows, NUM_FEATURES);
+    uint8_t **label_data    = read_image_data(TRAINING_LABELS_FILE, &label_rows, 1);
 
     // save data into `samples` and `labels`
     for(size_t i=0; i<NUM_TRAIN_SAMPLES; ++i) {
@@ -37,12 +37,8 @@ int main()
         }
     }
 
-    for(size_t i=0; i<rows; ++i) {
-        free(sample_data[i]);
-        free(label_data[i]);
-    }
-    free(sample_data);
-    free(label_data);
+    free_uint8_matrix(sample_data, sample_rows);
+    free_uint8_matrix(label_data, label_rows);
 
 #ifdef DEBUG
     printf("PROGRAM RUN IN DEBUG MODE\n\n");

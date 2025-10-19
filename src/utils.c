@@ -1,5 +1,15 @@
 #include "mlp.h"
 
+void free_uint8_matrix(uint8_t **addr, int nrows)
+{
+    if(!addr)
+        return;
+
+    for(int i=0; i<nrows; i++)
+        free(addr[i]);
+    free(addr);
+}
+
 void print_double_matrix(double **addr, int nrows, int ncols)
 {
     for(size_t i=0; i<nrows; ++i)
