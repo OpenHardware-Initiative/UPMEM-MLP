@@ -37,6 +37,13 @@ int main()
         }
     }
 
+    for(size_t i=0; i<rows; ++i) {
+        free(sample_data[i]);
+        free(label_data[i]);
+    }
+    free(sample_data);
+    free(label_data);
+
 #ifdef DEBUG
     printf("PROGRAM RUN IN DEBUG MODE\n\n");
 

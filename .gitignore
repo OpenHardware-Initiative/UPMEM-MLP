@@ -8,3 +8,4 @@ training_labels.txt
 build
 .vscode
 src/mlp
+*_log.txt

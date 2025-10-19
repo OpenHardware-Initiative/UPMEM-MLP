@@ -22,6 +22,8 @@ uint8_t **read_image_data(const char* filename, int *num_rows, const int num_col
     size_t line_size = 0;
     ssize_t chars_read = 0;
 
+    int success = 1;
+
     while((chars_read = getline(&line, &line_size, file)) != -1)
     {
         // if(line[0] == "#")
@@ -31,14 +33,16 @@ uint8_t **read_image_data(const char* filename, int *num_rows, const int num_col
         if(NULL == data)
         {
             fprintf(stderr, "Error 10002\n");
-            return NULL;
+            success = 0;
+            break;
         }
 
         data[*num_rows] = malloc(num_cols*sizeof(uint8_t));
         if(NULL == data[*num_rows])
         {
             fprintf(stderr, "Error 10003\n");
-            return NULL;
+            success = 0;
+            break;
         }
 
         char *token = strtok(line, " ");
@@ -53,7 +57,16 @@ uint8_t **read_image_data(const char* filename, int *num_rows, const int num_col
         ++(*num_rows);
     }
 
+    free(line);
+
     fclose(file);
 
-    return data;
+    if(success)
+        return data;
+
+    // if unsuccessful, free all dynamic memory and return NULL:
+    for(int i=0; i<*num_rows; ++i)
+        free(data[i]);
+    free(data);
+    return NULL;
 }
