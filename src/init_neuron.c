@@ -3,10 +3,24 @@
 NEURON *init_neuron(int num_weights)
 {
     NEURON *n = (NEURON *) malloc (sizeof(NEURON));
+    if(!n) {
+        return NULL;
+    }
     
     n->num_weights = num_weights;
+
     n->w    = (double *) malloc (sizeof(double) * n->num_weights);
+    if(!n->w) {
+        free(n);
+        return NULL;
+    }
+
     n->lw   = (double *) malloc (sizeof(double) * n->num_weights);
+    if(!n->lw) {
+        free(n->w);
+        free(n);
+        return NULL;
+    }
 
     double limit = 1.0/sqrt((double) num_weights);
 

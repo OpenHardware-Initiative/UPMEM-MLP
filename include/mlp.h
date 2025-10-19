@@ -41,6 +41,10 @@ double sse(double *real, double *ideal, int length);
 void update_weights(NETWORK *n, int layer_index, double *sample, double* delta, double* previous_y);
 
 // utility functions
+void free_layer(LAYER *l);
+void free_network(NETWORK *n);
+void free_neuron(NEURON *n);
+void free_double_matrix(double **addr, int nrows);
 void free_uint8_matrix(uint8_t **addr, int nrows);
 void print_double_matrix(double **addr, int nrows, int ncols);
 void print_double_vector(double *addr, int nrows);

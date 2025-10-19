@@ -15,6 +15,10 @@ int main()
     int num_neurons_per_layer[] = {NUM_FEATURES, 1000, 1000, 100, NUM_LABELS};
 
     NETWORK *n = init_network(num_inputs, num_layers, num_neurons_per_layer);
+    if(!n) {
+        fprintf(stderr, "Error 10004\n");
+        return 1;
+    }
 
     double **samples    = (double **) malloc (sizeof(double*)*NUM_TRAIN_SAMPLES);
     double **labels     = (double **) malloc (sizeof(double*)*NUM_TRAIN_SAMPLES);
@@ -92,6 +96,8 @@ int main()
     }
 
     printf("Training complete in %d epochs\n", epoch);
+
+    free_network(n);
 
     return 0;
 }
