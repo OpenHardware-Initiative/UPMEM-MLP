@@ -97,6 +97,9 @@ int main()
 
     printf("Training complete in %d epochs\n", epoch);
 
+    // memory cleanup before termination
+    free_double_matrix(samples, NUM_TRAIN_SAMPLES);
+    free_double_matrix(labels, NUM_TRAIN_SAMPLES);
     free_network(n);
 
     return 0;
