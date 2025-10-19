@@ -67,20 +67,39 @@ int main()
 
         for(int i=0; i<NUM_TRAIN_SAMPLES; ++i) {
             double *Y = get_y(n, n->num_layers-1, samples[i]);
+            if(!Y) {
+                fprintf(stderr, "Error 10007\n");
+                return 1;
+            }
             loss_prev += sse(Y, labels[i], last_layer->num_neurons) / (double)NUM_TRAIN_SAMPLES;
+            free(Y);
         }
 
         for(int i=0; i<NUM_TRAIN_SAMPLES; ++i) {
             for(int j=n->num_layers-1; j>=0; --j) {
                 double *d = delta(n, samples[i], labels[i], j);
+                
                 double *py = j ? get_y(n, j-1, samples[i]) : NULL;
+                if(j && !py) {
+                    fprintf(stderr, "Error 10008\n");
+                    return 1;
+                }
+                
                 update_weights(n, j, samples[i], d, py);
+                
+                if(j)
+                    free(py);
             }
         }
 
         for(int i=0; i<NUM_TRAIN_SAMPLES; ++i) {
             double *Y = get_y(n, n->num_layers-1, samples[i]);
+            if(!Y) {
+                fprintf(stderr, "Error 10009\n");
+                return 1;
+            }
             loss_new += sse(Y, labels[i], last_layer->num_neurons) / (double)NUM_TRAIN_SAMPLES;
+            free(Y);
         }
 
         loss_delta = fabs(loss_new - loss_prev);

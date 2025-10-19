@@ -12,7 +12,12 @@ double *get_y(NETWORK *n, int layer_index, double *sample)
         y_size++;
 
     double *z = get_z(n, layer_index, sample);
+
     double *y = (double *) malloc (sizeof(double)*y_size);
+    if(!y) {
+        fprintf(stderr, "Error 10006\n");
+        return NULL;
+    }
 
     for(size_t i=0; i<y_size; ++i) {
         if(is_current_layer_last_layer)
@@ -20,6 +25,8 @@ double *get_y(NETWORK *n, int layer_index, double *sample)
         else
             y[i] = i==0 ? 1 : activation(z[i-1]);
     }
+
+    free(z);
 
     return y;
 }
