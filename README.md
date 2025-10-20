@@ -72,7 +72,6 @@ UPMEM-MLP is a work in progress as of 2025-10-19.
 
 ### To-Do
 
-- [ ] Fix memory leaks
 - [ ] Introduce batch processing
 - [ ] Adapt `src/get_z` for in-memory matrix multiplication on UPMEM
 

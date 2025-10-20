@@ -60,6 +60,10 @@ int main()
     while(1) {
 
         double *loss_prev = get_total_loss(n, samples, labels, NUM_TRAIN_SAMPLES);
+        if(!loss_prev) {
+            fprintf(stderr, "Error 10014\n");
+            return 1;
+        }
 
         for(int i=0; i<NUM_TRAIN_SAMPLES; ++i) {
             for(int j=n->num_layers-1; j>=0; --j) {
@@ -73,12 +77,16 @@ int main()
                 
                 update_weights(n, j, samples[i], d, py);
                 
-                if(j)
-                    free(py);
+                free(d);
+                if(j) free(py);
             }
         }
 
         double *loss_new = get_total_loss(n, samples, labels, NUM_TRAIN_SAMPLES);
+        if(!loss_new) {
+            fprintf(stderr, "Error 10015\n");
+            return 1;
+        }
 
         double loss_delta = fabs(*loss_new - *loss_prev);
 

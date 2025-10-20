@@ -8,6 +8,8 @@ double *get_total_loss(NETWORK *n, double **samples, double **ideal, int nsample
         return NULL;
     }
 
+    *total_loss = 0.0;
+
     LAYER *last_layer = n->l+(n->num_layers-1);
 
     for(int i=0; i<nsamples; ++i) {
