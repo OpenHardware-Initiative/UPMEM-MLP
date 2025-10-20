@@ -24,12 +24,13 @@ jobs:
 
       - name: Run Valgrind
         working-directory: src
-        run: valgrind --leak-check=full \
-                      --show-leak-kinds=all \
-                      --track-origins=yes \
-                      --error-exitcode=1 \
-                      --log-file=valgrind.txt \
-                      ./mlp > /dev/null
+        run: | 
+          valgrind --leak-check=full \
+                   --show-leak-kinds=all \
+                   --track-origins=yes \
+                   --error-exitcode=1 \
+                   --log-file=valgrind.txt \
+                   ./mlp > /dev/null
       
       - name: Save Valgrind log
         if: always()
