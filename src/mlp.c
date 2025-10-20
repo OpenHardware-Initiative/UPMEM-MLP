@@ -57,23 +57,9 @@ int main()
     printf("Starting training...\n");
 #endif
 
-    LAYER* last_layer = n->l+(n->num_layers-1);
-
     while(1) {
 
-        double loss_delta = 0.0;
-        double loss_prev = 0.0;
-        double loss_new = 0.0;
-
-        for(int i=0; i<NUM_TRAIN_SAMPLES; ++i) {
-            double *Y = get_y(n, n->num_layers-1, samples[i]);
-            if(!Y) {
-                fprintf(stderr, "Error 10007\n");
-                return 1;
-            }
-            loss_prev += sse(Y, labels[i], last_layer->num_neurons) / (double)NUM_TRAIN_SAMPLES;
-            free(Y);
-        }
+        double *loss_prev = get_total_loss(n, samples, labels, NUM_TRAIN_SAMPLES);
 
         for(int i=0; i<NUM_TRAIN_SAMPLES; ++i) {
             for(int j=n->num_layers-1; j>=0; --j) {
@@ -81,7 +67,7 @@ int main()
                 
                 double *py = j ? get_y(n, j-1, samples[i]) : NULL;
                 if(j && !py) {
-                    fprintf(stderr, "Error 10008\n");
+                    fprintf(stderr, "Error 10009\n");
                     return 1;
                 }
                 
@@ -92,17 +78,12 @@ int main()
             }
         }
 
-        for(int i=0; i<NUM_TRAIN_SAMPLES; ++i) {
-            double *Y = get_y(n, n->num_layers-1, samples[i]);
-            if(!Y) {
-                fprintf(stderr, "Error 10009\n");
-                return 1;
-            }
-            loss_new += sse(Y, labels[i], last_layer->num_neurons) / (double)NUM_TRAIN_SAMPLES;
-            free(Y);
-        }
+        double *loss_new = get_total_loss(n, samples, labels, NUM_TRAIN_SAMPLES);
 
-        loss_delta = fabs(loss_new - loss_prev);
+        double loss_delta = fabs(*loss_new - *loss_prev);
+
+        free(loss_prev);
+        free(loss_new);
 
         epoch++;
         

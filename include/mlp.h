@@ -34,6 +34,7 @@ double drand();
 NEURON *init_neuron(int num_weights);
 LAYER *init_layer(int num_neurons, int num_weights_per_neuron);
 NETWORK *init_network(int num_inputs, int num_layers, int *num_inputs_per_layer);
+double *get_total_loss(NETWORK *n, double **samples, double **ideal, int nsamples);
 double *get_y(NETWORK *n, int layer_index, double *sample);
 double *get_z(NETWORK *n, int layer_index, double *sample);
 uint8_t **read_image_data(const char *filename, int *num_rows, const int num_cols);
