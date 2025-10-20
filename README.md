@@ -2,13 +2,15 @@
 
 UPMEM-MLP is an attempt at implementing a multilayer perceptron application in pure C and accelerating this application on the UPMEM platform.
 
+[![Unit Tests](https://github.com/OpenHardware-Initiative/UPMEM-MLP/actions/workflows/unit_tests.yaml/badge.svg)](https://github.com/OpenHardware-Initiative/UPMEM-MLP/actions/workflows/unit_tests.yaml) [![Valgrind](https://github.com/OpenHardware-Initiative/UPMEM-MLP/actions/workflows/valgrind.yaml/badge.svg)](https://github.com/OpenHardware-Initiative/UPMEM-MLP/actions/workflows/valgrind.yaml)
+
 ## Requirements
 
 - GCC or Clang
 - CMake 3.10 or higher
 - UPMEM SDK
 
-## Installing UPMEM SDK
+### Installing UPMEM SDK
 
 To set up the UPMEM SDK on your system:
 
@@ -44,31 +46,41 @@ make
 make test
 ```
 
-## Running the Multilayer Perceptron Natively
+## Compiling the Multilayer Perceptron Natively
 
-To run the C multilayer perceptron implementation:
+To natively run the C multilayer perceptron on your system:
 
-1. Navigate to the source directory:
-
-```bash
-cd src
-```
-
-2. Compile the application:
+1. Create a Python virtual environment (optional, but recommended) and install requirements:
 
 ```bash
-gcc -I../include *.c -o mlp -lm
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
 
-To compile in `DEBUG` mode (which offers a more detailed printout to stdout):
+2. Extract training samples & labels:
 
 ```bash
-gcc -DDEBUG -I../include *.c -o mlp -lm
+python3 read_dataset.py
 ```
+
+3. Compile the application:
+
+```bash
+gcc -Iinclude src/*.c -o mlp -lm
+```
+
+With this command, you can use:
+
+- `-DDEBUG` for the debug mode, which delivers a richer printout
+- `-DEPSILON=...` to configure EPSILON from the command line
+- `-DNUM_TRAIN_SAMPLES=...` to configure from the command line how many samples the model should be trained with
+- `-DTRAINING_IMAGES_FILE=...` to configure the path to the text file samples should be sourced from
+- `-DTRAINING_LABELS_FILE=...` to configure the path to the text file labels should be sourced from
 
 ## Status
 
-UPMEM-MLP is a work in progress as of 2025-10-19.
+UPMEM-MLP is a work in progress as of 2025-10-20.
 
 ### To-Do
 
