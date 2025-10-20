@@ -1,7 +1,7 @@
 #include "mlp.h"
 #include "test.h"
 
-int test_delta()
+int test_get_delta()
 {
     int test_pass_fail = 1;
 
@@ -28,20 +28,20 @@ int test_delta()
 
     // test last layer delta
 
-    double *d_last_layer = delta(n, samples, ideals, 1);
+    double *d_last_layer = get_delta(n, samples, ideals, 1);
 
     for(int i=0; i<3; i++)
     {
-        test_pass_fail &= (d_last_layer[i] == (ideals[i] - get_y(n, 1, samples)[i]) * activation_derivative(get_z(n, 1, samples)[i]));
+        test_pass_fail &= (d_last_layer[i] == (ideals[i] - get_y(n, 1, samples)[i]) * get_activation_derivative(get_z(n, 1, samples)[i]));
     }
 
     // test before-last layer delta
 
-    double *d_first_layer = delta(n, samples, ideals, 0);
+    double *d_first_layer = get_delta(n, samples, ideals, 0);
 
     for(int i=0; i<3; i++)
     {
-        test_pass_fail &= (d_first_layer[i] == (d_last_layer[0] + d_last_layer[1] + d_last_layer[2]) * activation_derivative(get_z(n, 0, samples)[i]));
+        test_pass_fail &= (d_first_layer[i] == (d_last_layer[0] + d_last_layer[1] + d_last_layer[2]) * get_activation_derivative(get_z(n, 0, samples)[i]));
     }
 
     return test_pass_fail;
@@ -49,7 +49,7 @@ int test_delta()
 
 int main()
 {
-    int test_pass_fail = test_delta();
+    int test_pass_fail = test_get_delta();
 
     TEST_PASS_FAIL(test_pass_fail);
 }

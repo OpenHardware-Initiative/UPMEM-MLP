@@ -63,7 +63,7 @@ int main()
 
         for(int i=0; i<NUM_TRAIN_SAMPLES; ++i) {
             for(int j=n->num_layers-1; j>=0; --j) {
-                double *d = delta(n, samples[i], labels[i], j);
+                double *d = get_delta(n, samples[i], labels[i], j);
                 
                 double *py = j ? get_y(n, j-1, samples[i]) : NULL;
                 if(j && !py) {

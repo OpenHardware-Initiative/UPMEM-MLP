@@ -21,9 +21,9 @@ double *get_y(NETWORK *n, int layer_index, double *sample)
 
     for(size_t i=0; i<y_size; ++i) {
         if(is_current_layer_last_layer)
-            y[i] = activation(z[i]);
+            y[i] = get_activation(z[i]);
         else
-            y[i] = i==0 ? 1 : activation(z[i-1]);
+            y[i] = i==0 ? 1 : get_activation(z[i-1]);
     }
 
     free(z);

@@ -31,16 +31,16 @@ int test_get_y()
     // printf("y[2] == %.2lf\n", y[2]);
 
     int test_pass_fail = (y[0] == 1)
-                        && (y[1] == activation(z[0]))
-                        && (y[2] == activation(z[1]));
+                        && (y[1] == get_activation(z[0]))
+                        && (y[2] == get_activation(z[1]));
 
     y = get_y(n, 1, samples);
     z = get_z(n, 1, samples);
 
     test_pass_fail = test_pass_fail
-                    && (y[0] == activation(z[0]))
-                    && (y[1] == activation(z[1]))
-                    && (y[2] == activation(z[2]));
+                    && (y[0] == get_activation(z[0]))
+                    && (y[1] == get_activation(z[1]))
+                    && (y[2] == get_activation(z[2]));
 
     return test_pass_fail;
 }

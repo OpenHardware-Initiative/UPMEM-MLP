@@ -3,8 +3,8 @@
 
 int test_activation(double x)
 {
-    double activation_result = activation(x);
-    double activation_derivative_result = activation_derivative(x);
+    double activation_result = get_activation(x);
+    double activation_derivative_result = get_activation_derivative(x);
 
     double expected_activation_derivative = 1 - pow(activation_result, 2);
 

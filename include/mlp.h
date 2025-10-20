@@ -27,9 +27,9 @@ typedef struct {
     LAYER *l;
 } NETWORK;
 
-double activation(double x);
-double activation_derivative(double x);
-double *delta(NETWORK *N, double* samples, double* ideal, int layer_index);
+double get_activation(double x);
+double get_activation_derivative(double x);
+double *get_delta(NETWORK *N, double* samples, double* ideal, int layer_index);
 double drand();
 NEURON *init_neuron(int num_weights);
 LAYER *init_layer(int num_neurons, int num_weights_per_neuron);
