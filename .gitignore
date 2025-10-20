@@ -9,3 +9,4 @@ build
 .vscode
 src/mlp
 *_log.txt
+mlp
