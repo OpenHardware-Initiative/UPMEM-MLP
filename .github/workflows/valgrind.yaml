@@ -16,7 +16,10 @@ jobs:
           submodules: 'recursive'
 
       - name: Install dependencies
-        run: sudo apt update && sudo apt install -y build-essential valgrind
+        run: | 
+          sudo apt update
+          sudo apt install -y build-essential valgrind
+          pip3 install numpy
 
       - name: Extract training samples & labels
         run: python3 read_dataset.py
