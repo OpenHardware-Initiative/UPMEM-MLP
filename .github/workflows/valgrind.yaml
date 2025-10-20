@@ -18,6 +18,9 @@ jobs:
       - name: Install dependencies
         run: sudo apt update && sudo apt install -y build-essential valgrind
 
+      - name: Extract training samples & labels
+        run: python3 read_dataset.py
+
       - name: Compile MLP
         working-directory: src
         run: gcc -g -DEPSILON=0.5 -DNUM_TRAIN_SAMPLES=2 -I../include/ *.c -o mlp -lm
