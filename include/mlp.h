@@ -7,7 +7,11 @@
 #include <stdlib.h>
 
 #define LEARNING_RATE 0.1
+
+#ifndef EPSILON
 #define EPSILON 0.0000005
+#endif
+
 #define MOMENTUM 0.8
 
 extern unsigned int rseed;
