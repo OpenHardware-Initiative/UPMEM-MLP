@@ -25,11 +25,9 @@ jobs:
         run: python3 read_dataset.py
 
       - name: Compile MLP
-        working-directory: src
-        run: gcc -g -DEPSILON=0.5 -DNUM_TRAIN_SAMPLES=2 -I../include/ *.c -o mlp -lm
+        run: gcc -g -DEPSILON=0.5 -DNUM_TRAIN_SAMPLES=2 -Iinclude src/*.c -o mlp -lm
 
       - name: Run Valgrind
-        working-directory: src
         run: | 
           valgrind --leak-check=full \
                    --show-leak-kinds=all \
@@ -43,4 +41,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: valgrind_log
-          path: src/valgrind.txt
+          path: valgrind.txt
