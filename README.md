@@ -73,6 +73,8 @@ gcc -Iinclude src/*.c -o mlp -lm
 With this command, you can use:
 
 - `-DDEBUG` for the debug mode, which delivers a richer printout
+- `-DBATCH_SIZE=...` to configure the batch size used during training
+- `-DMAX_EPOCH=...` to configure the maximum number of epochs the training can run for
 - `-DEPSILON=...` to configure EPSILON from the command line
 - `-DNUM_TRAIN_SAMPLES=...` to configure from the command line how many samples the model should be trained with
 - `-DTRAINING_IMAGES_FILE=...` to configure the path to the text file samples should be sourced from
@@ -80,11 +82,10 @@ With this command, you can use:
 
 ## Status
 
-UPMEM-MLP is a work in progress as of 2025-10-20.
+UPMEM-MLP is a work in progress as of 2025-11-14.
 
 ### To-Do
 
-- [ ] Introduce batch processing
 - [ ] Adapt `src/get_z` for in-memory matrix multiplication on UPMEM
 
 ## License
