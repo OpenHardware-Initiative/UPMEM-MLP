@@ -44,7 +44,7 @@ int test_update_weights()
     update_weights(n, 0, samples, delta, samples);
 
     for(int i=0; i<4; i++)
-        test_pass_fail &= (n->l[0].n[0].lw[i] == 1.0) && (n->l[0].n[0].w[i] == 1.0 + MOMENTUM + LEARNING_RATE);
+        test_pass_fail &= (n->l[0].n[0].lw[i] == 0.0) && (n->l[0].n[0].w[i] == 1.0) && (n->l[0].n[0].batch_dw[i] == LEARNING_RATE);
 
     return test_pass_fail;
 }

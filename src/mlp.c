@@ -57,6 +57,8 @@ int main()
     printf("Starting training...\n");
 #endif
 
+    int num_batches = (NUM_TRAIN_SAMPLES + BATCH_SIZE - 1) / BATCH_SIZE;
+
     while(1) {
 
         double *loss_prev = get_total_loss(n, samples, labels, NUM_TRAIN_SAMPLES);
@@ -65,21 +67,30 @@ int main()
             return 1;
         }
 
-        for(int i=0; i<NUM_TRAIN_SAMPLES; ++i) {
-            for(int j=n->num_layers-1; j>=0; --j) {
-                double *d = get_delta(n, samples[i], labels[i], j);
-                
-                double *py = j ? get_y(n, j-1, samples[i]) : NULL;
-                if(j && !py) {
-                    fprintf(stderr, "Error 10009\n");
-                    return 1;
+        for(int b=0; b<num_batches; ++b) {
+            int batch_start = b * BATCH_SIZE;
+            int batch_end = batch_start + BATCH_SIZE;
+            
+            if(batch_end > NUM_TRAIN_SAMPLES)
+                batch_end = NUM_TRAIN_SAMPLES;
+
+            for(int i=batch_start; i<batch_end; ++i) {
+                for(int j=n->num_layers-1; j>=0; --j) {
+                    double *d = get_delta(n, samples[i], labels[i], j);
+
+                    double *py = j ? get_y(n, j-1, samples[i]) : NULL;
+                    if(j && !py) {
+                        fprintf(stderr, "Error 10009\n");
+                        return 1;
+                    }
+
+                    update_weights(n, j, samples[i], d, py);
+
+                    free(d);
+                    if(j) free(py);
                 }
-                
-                update_weights(n, j, samples[i], d, py);
-                
-                free(d);
-                if(j) free(py);
             }
+            apply_batch_gradients(n, batch_end-batch_start);
         }
 
         double *loss_new = get_total_loss(n, samples, labels, NUM_TRAIN_SAMPLES);

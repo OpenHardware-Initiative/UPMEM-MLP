@@ -32,6 +32,7 @@ LAYER *init_layer(int num_neurons, int num_weights_per_neuron)
         neuron->num_weights = temp->num_weights;
         neuron->w = temp->w;
         neuron->lw = temp->lw;
+        neuron->batch_dw = temp->batch_dw;
 
         free(temp);
     }

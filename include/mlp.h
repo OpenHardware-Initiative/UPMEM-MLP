@@ -8,6 +8,10 @@
 
 #define LEARNING_RATE 0.1
 
+#ifndef BATCH_SIZE
+#define BATCH_SIZE 1
+#endif
+
 #ifndef EPSILON
 #define EPSILON 0.0000005
 #endif
@@ -19,6 +23,7 @@ extern unsigned int rseed;
 typedef struct {
     int num_weights;
     double *w, *lw;
+    double *batch_dw;
 } NEURON;
 
 typedef struct {
@@ -44,6 +49,7 @@ double *get_z(NETWORK *n, int layer_index, double *sample);
 uint8_t **read_image_data(const char *filename, int *num_rows, const int num_cols);
 double sse(double *real, double *ideal, int length);
 void update_weights(NETWORK *n, int layer_index, double *sample, double* delta, double* previous_y);
+void apply_batch_gradients(NETWORK* n, int batch_size);
 
 // utility functions
 void free_layer(LAYER *l);

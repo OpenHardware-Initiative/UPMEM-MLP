@@ -34,9 +34,11 @@ void free_neuron(NEURON *n)
     
     free(n->w);
     free(n->lw);
+    free(n->batch_dw);
 
     n->w = NULL;
     n->lw = NULL;
+    n->batch_dw = NULL;
     n->num_weights = 0;
 }
 
