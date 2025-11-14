@@ -22,13 +22,22 @@ NEURON *init_neuron(int num_weights)
         return NULL;
     }
 
+    n->batch_dw = (double *) malloc (sizeof(double) * n->num_weights);
+    if(!n->batch_dw) {
+        free(n->lw);
+        free(n->w);
+        free(n);
+        return NULL;
+    }
+
     double limit = 1.0/sqrt((double) num_weights);
 
     for(int i=0; i<num_weights; i++)
     {
         double rand_unit = (double)rand() / (double)RAND_MAX;
         n->w[i] = (rand_unit * 2.0 - 1.0) * limit;
-        n->lw[i] = 0;
+        n->lw[i] = n->w[i];
+        n->batch_dw[i] = 0;
     }
 
     return n;

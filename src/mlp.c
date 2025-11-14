@@ -31,9 +31,9 @@ int main()
         *(samples+i)    = (double *) malloc (sizeof(double)*(NUM_FEATURES+1));
         *(labels+i)     = (double *) malloc (sizeof(double)*NUM_LABELS);
         
-        samples[i][0] = -1.0;   // bias
+        samples[i][0] = 0.0;   // bias
         for(size_t j=1; j<(NUM_FEATURES+1); ++j) {
-            samples[i][j] = sample_data[i][j-1] / 255.0;
+            samples[i][j] = (sample_data[i][j-1] / 127.5) - 1.0;
         }
         
         for(size_t j=0; j<NUM_LABELS; ++j) {
@@ -57,6 +57,8 @@ int main()
     printf("Starting training...\n");
 #endif
 
+    int num_batches = (NUM_TRAIN_SAMPLES + BATCH_SIZE - 1) / BATCH_SIZE;
+
     while(1) {
 
         double *loss_prev = get_total_loss(n, samples, labels, NUM_TRAIN_SAMPLES);
@@ -65,21 +67,30 @@ int main()
             return 1;
         }
 
-        for(int i=0; i<NUM_TRAIN_SAMPLES; ++i) {
-            for(int j=n->num_layers-1; j>=0; --j) {
-                double *d = get_delta(n, samples[i], labels[i], j);
-                
-                double *py = j ? get_y(n, j-1, samples[i]) : NULL;
-                if(j && !py) {
-                    fprintf(stderr, "Error 10009\n");
-                    return 1;
+        for(int b=0; b<num_batches; ++b) {
+            int batch_start = b * BATCH_SIZE;
+            int batch_end = batch_start + BATCH_SIZE;
+            
+            if(batch_end > NUM_TRAIN_SAMPLES)
+                batch_end = NUM_TRAIN_SAMPLES;
+
+            for(int i=batch_start; i<batch_end; ++i) {
+                for(int j=n->num_layers-1; j>=0; --j) {
+                    double *d = get_delta(n, samples[i], labels[i], j);
+
+                    double *py = j ? get_y(n, j-1, samples[i]) : NULL;
+                    if(j && !py) {
+                        fprintf(stderr, "Error 10009\n");
+                        return 1;
+                    }
+
+                    update_weights(n, j, samples[i], d, py);
+
+                    free(d);
+                    if(j) free(py);
                 }
-                
-                update_weights(n, j, samples[i], d, py);
-                
-                free(d);
-                if(j) free(py);
             }
+            apply_batch_gradients(n, batch_end-batch_start);
         }
 
         double *loss_new = get_total_loss(n, samples, labels, NUM_TRAIN_SAMPLES);
@@ -99,11 +110,23 @@ int main()
         printf("Epoch %d --- loss_delta = %.12lf\n", epoch, loss_delta);
 #endif
 
-        if(loss_delta < EPSILON)
+        if(loss_delta < EPSILON || epoch == MAX_EPOCH)
             break;
     }
 
     printf("Training complete in %d epochs\n", epoch);
+
+#ifdef DEBUG
+    for(int i=0; i<num_layers; i++) {
+        LAYER *lp = n->l+i;             // ptr to i-th layer of the network n
+        for(int j=0; j<lp->num_neurons; j++) {
+            NEURON *np = lp->n+j;       // ptr to j-th neuron of the i-th layer of network n
+            print_double_vector(np->w, np->num_weights);
+            printf("\n");
+        }
+        printf("\n\n");
+    }
+#endif
 
     // memory cleanup before termination
     free_double_matrix(samples, NUM_TRAIN_SAMPLES);
