@@ -18,6 +18,8 @@
 
 #define MOMENTUM 0.8
 
+#define MAX_EPOCH 30
+
 extern unsigned int rseed;
 
 typedef struct {
