@@ -11,3 +11,4 @@ src/mlp
 *_log.txt
 venv/
 mlp
+*.log
