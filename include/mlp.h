@@ -32,6 +32,7 @@ typedef struct {
 
 typedef struct {
     int num_neurons;
+    double *inputs, *deltas;
     NEURON *n;
 } LAYER;
 
@@ -45,8 +46,8 @@ double get_activation_derivative(double x);
 double *get_delta(NETWORK *N, double* samples, double* ideal, int layer_index);
 double drand();
 NEURON *init_neuron(int num_weights);
-LAYER *init_layer(int num_neurons, int num_weights_per_neuron);
-NETWORK *init_network(int num_inputs, int num_layers, int *num_inputs_per_layer);
+LAYER *init_layer(int num_neurons, int num_weights_per_neuron, int batch_size);
+NETWORK *init_network(int num_inputs, int num_layers, int *num_inputs_per_layer, int batch_size);
 double *get_total_loss(NETWORK *n, double **samples, double **ideal, int nsamples);
 double *get_y(NETWORK *n, int layer_index, double *sample);
 double *get_z(NETWORK *n, int layer_index, double *sample);

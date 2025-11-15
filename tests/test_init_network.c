@@ -4,7 +4,7 @@
 int test_init_network()
 {
     int num_neurons_per_layer[3] = {7, 5, 2};
-    NETWORK *n = init_network(7, 3, num_neurons_per_layer);
+    NETWORK *n = init_network(7, 3, num_neurons_per_layer, BATCH_SIZE);
 
     // printf("%d\n", n->num_inputs);
     // printf("%d\n", n->num_layers);
@@ -18,6 +18,8 @@ int test_init_network()
 
     int pass_fail = (n->num_inputs == 7)
                     && (n->num_layers == 3)
+                    && (n->l->inputs)
+                    && (n->l->deltas)
                     && (n->l[0].num_neurons == 7)
                     && (n->l[1].num_neurons == 5)
                     && (n->l[2].num_neurons == 2)

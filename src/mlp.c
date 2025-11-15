@@ -14,7 +14,7 @@ int main()
     int num_layers = 5;
     int num_neurons_per_layer[] = {NUM_FEATURES, 1000, 1000, 100, NUM_LABELS};
 
-    NETWORK *n = init_network(num_inputs, num_layers, num_neurons_per_layer);
+    NETWORK *n = init_network(num_inputs, num_layers, num_neurons_per_layer, BATCH_SIZE);
     if(!n) {
         fprintf(stderr, "Error 10004\n");
         return 1;

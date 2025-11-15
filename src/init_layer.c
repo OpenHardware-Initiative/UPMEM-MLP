@@ -1,6 +1,6 @@
 #include "mlp.h"
 
-LAYER *init_layer(int num_neurons, int num_weights_per_neuron)
+LAYER *init_layer(int num_neurons, int num_weights_per_neuron, int batch_size)
 {
     LAYER *l = (LAYER *) malloc (sizeof(LAYER));
     if(!l) {
@@ -9,8 +9,23 @@ LAYER *init_layer(int num_neurons, int num_weights_per_neuron)
 
     l->num_neurons = num_neurons;
 
+    l->inputs = (double*) malloc (num_weights_per_neuron * sizeof(double));
+    if(!l->inputs) {
+        free(l);
+        return NULL;
+    }
+
+    l->deltas = (double*) malloc (num_neurons * sizeof(double));
+    if(!l->deltas) {
+        free(l->inputs);
+        free(l);
+        return NULL;
+    }
+
     l->n = (NEURON *) malloc (sizeof(NEURON)*num_neurons);
     if(!l->n) {
+        free(l->deltas);
+        free(l->inputs);
         free(l);
         return NULL;
     }
@@ -25,6 +40,8 @@ LAYER *init_layer(int num_neurons, int num_weights_per_neuron)
                 free_neuron(l->n+j);
             }
             free(l->n);
+            free(l->deltas);
+            free(l->inputs);
             free(l);
             return NULL;
         }

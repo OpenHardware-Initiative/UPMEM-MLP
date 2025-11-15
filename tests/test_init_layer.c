@@ -3,7 +3,7 @@
 
 int test_init_layer()
 {
-    LAYER *l = init_layer(3, 4);
+    LAYER *l = init_layer(3, 4, BATCH_SIZE);
 
     // printf("%d\n", l->num_neurons);
     // printf("%lf\n", l->n[0].w[0]);
@@ -15,6 +15,8 @@ int test_init_layer()
     // printf("%d\n", l->n[2].num_weights);
 
     int test_pass_fail = (l->num_neurons == 3)
+                        && (l->inputs)
+                        && (l->deltas)
                         && (l->n[0].lw[0] == l->n[0].w[0])
                         && (l->n[1].w[0] >= 0)
                         && (l->n[1].w[0] <= 1)

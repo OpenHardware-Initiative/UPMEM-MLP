@@ -1,6 +1,6 @@
 #include "mlp.h"
 
-NETWORK *init_network(int num_inputs, int num_layers, int *num_neurons_per_layer)
+NETWORK *init_network(int num_inputs, int num_layers, int *num_neurons_per_layer, int batch_size)
 {
     NETWORK *n = (NETWORK *) malloc (sizeof(NETWORK));
     if(!n) {
@@ -29,7 +29,7 @@ NETWORK *init_network(int num_inputs, int num_layers, int *num_neurons_per_layer
         else
             num_weights_per_neuron = num_neurons_per_layer[i-1] + 1;
 
-        LAYER *temp = init_layer(num_neurons_current_layer, num_weights_per_neuron);
+        LAYER *temp = init_layer(num_neurons_current_layer, num_weights_per_neuron, batch_size);
         if(!temp) {
             for(int j=0; j<i; ++j) {
                 free_layer(n->l+j);
@@ -40,6 +40,8 @@ NETWORK *init_network(int num_inputs, int num_layers, int *num_neurons_per_layer
         }
 
         current_layer->num_neurons = num_neurons_current_layer;
+        current_layer->inputs = temp->inputs;
+        current_layer->deltas = temp->deltas;
         current_layer->n = temp->n;
 
         free(temp);

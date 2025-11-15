@@ -9,7 +9,7 @@ int test_get_delta()
     double samples[] = {1, 1, 1, 1};
     double ideals[] = {3, 3, 3, 3};
 
-    NETWORK *n = init_network(3, 2, num_neurons_per_layers);
+    NETWORK *n = init_network(3, 2, num_neurons_per_layers, BATCH_SIZE);
 
     n->l[1].n[0].w[0] = 1.0;
     n->l[1].n[0].w[1] = 1.0;

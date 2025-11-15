@@ -6,7 +6,7 @@ int test_get_y()
     int num_neurons_per_layers[] = {3, 3};
     double samples[] = {1, 1, 1, 1};
 
-    NETWORK *n = init_network(3, 2, num_neurons_per_layers);
+    NETWORK *n = init_network(3, 2, num_neurons_per_layers, BATCH_SIZE);
 
     n->l[0].n[0].w[0] = -1.0;
     n->l[0].n[0].w[1] = 1.0;

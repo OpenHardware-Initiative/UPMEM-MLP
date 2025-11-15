@@ -9,7 +9,7 @@ int test_accumulate_gradients()
     double samples[] = {1, 1, 1, 1};
     double delta[] = {1, 1, 1, 1};
 
-    NETWORK *n = init_network(3, 2, num_neurons_per_layers);
+    NETWORK *n = init_network(3, 2, num_neurons_per_layers, BATCH_SIZE);
 
     n->l[0].n[0].lw[0] = 0.0;
     n->l[0].n[0].lw[1] = 0.0;
