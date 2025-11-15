@@ -82,9 +82,7 @@ int main()
 
                     double *d = get_delta(n, samples[i], labels[i], j);
 
-                    for(int k=0; k<lp->num_neurons; k++) {
-                        (lp->deltas+batch_ctr*lp->num_neurons)[k] = d[k];
-                    }
+                    memcpy(lp->deltas+batch_ctr*lp->num_neurons, d, lp->num_neurons * sizeof(double));
 
                     double *py = j ? get_y(n, j-1, samples[i]) : NULL;
                     if(j && !py) {
@@ -92,9 +90,7 @@ int main()
                         return 1;
                     }
 
-                    for(int k=0; k<lp->n->num_weights; k++) {
-                        (lp->inputs + batch_ctr * lp->n->num_weights)[k] = j ? py[k] : samples[i][k];
-                    }
+                    memcpy(lp->inputs+batch_ctr*lp->n->num_weights, (j ? py : samples[i]), lp->n->num_weights * sizeof(double));
 
                     free(d);
                     if(j) free(py);
