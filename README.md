@@ -80,7 +80,7 @@ With this command, you can use:
 - `-DLEARNING_RATE=...` to configure learning rate from the command line
 - `-DMOMENTUM=...` to configure momentum from the command line
 - `-DNUM_TRAIN_SAMPLES=...` to configure from the command line how many samples the model should be trained with
-- `-DTRAINING_IMAGES_FILE=...` to configure the path to the text file samples should be sourced from
+- `-DTRAINING_SAMPLES_FILE=...` to configure the path to the text file samples should be sourced from
 - `-DTRAINING_LABELS_FILE=...` to configure the path to the text file labels should be sourced from
 
 ## Status
@@ -89,7 +89,7 @@ UPMEM-MLP is a work in progress as of 2025-11-14.
 
 ### To-Do
 
-- [ ] Adapt `src/get_z` for in-memory matrix multiplication on UPMEM
+- [ ] Adapt `multiply_matrix` for in-memory matrix multiplication on UPMEM
 
 ## License
 

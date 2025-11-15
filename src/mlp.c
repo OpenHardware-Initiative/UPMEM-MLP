@@ -23,7 +23,7 @@ int main()
     double **samples    = (double **) malloc (sizeof(double*)*NUM_TRAIN_SAMPLES);
     double **labels     = (double **) malloc (sizeof(double*)*NUM_TRAIN_SAMPLES);
 
-    uint8_t **sample_data   = read_image_data(TRAINING_IMAGES_FILE, &sample_rows, NUM_FEATURES);
+    uint8_t **sample_data   = read_image_data(TRAINING_SAMPLES_FILE, &sample_rows, NUM_FEATURES);
     uint8_t **label_data    = read_image_data(TRAINING_LABELS_FILE, &label_rows, 1);
 
     // save data into `samples` and `labels`

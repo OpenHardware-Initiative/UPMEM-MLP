@@ -8,8 +8,8 @@
 #define NUM_LABELS 10
 #define NUM_FEATURES (28*28)
 
-#ifndef TRAINING_IMAGES_FILE
-#define TRAINING_IMAGES_FILE "training_images.txt"
+#ifndef TRAINING_SAMPLES_FILE
+#define TRAINING_SAMPLES_FILE "training_images.txt"
 #endif
 
 #ifndef TRAINING_LABELS_FILE
