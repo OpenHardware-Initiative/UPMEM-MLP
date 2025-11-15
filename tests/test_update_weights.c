@@ -1,7 +1,7 @@
 #include "mlp.h"
 #include "test.h"
 
-int test_update_weights()
+int test_accumulate_gradients()
 {
     int test_pass_fail = 1;
 
@@ -41,7 +41,7 @@ int test_update_weights()
     n->l[0].n[2].w[2] = 1.0;
     n->l[0].n[2].w[3] = 1.0;
 
-    update_weights(n, 0, samples, delta, samples);
+    accumulate_gradients(n, 0, samples, delta, samples);
 
     for(int i=0; i<4; i++)
         test_pass_fail &= (n->l[0].n[0].lw[i] == 0.0) && (n->l[0].n[0].w[i] == 1.0) && (n->l[0].n[0].batch_dw[i] == LEARNING_RATE);
@@ -51,7 +51,7 @@ int test_update_weights()
 
 int main()
 {
-    int test_pass_fail = test_update_weights();
+    int test_pass_fail = test_accumulate_gradients();
 
     TEST_PASS_FAIL(test_pass_fail);
 }

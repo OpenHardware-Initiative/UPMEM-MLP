@@ -84,13 +84,13 @@ int main()
                         return 1;
                     }
 
-                    update_weights(n, j, samples[i], d, py);
+                    accumulate_gradients(n, j, samples[i], d, py);
 
                     free(d);
                     if(j) free(py);
                 }
             }
-            apply_batch_gradients(n, batch_end-batch_start);
+            apply_gradients(n, batch_end-batch_start);
         }
 
         double *loss_new = get_total_loss(n, samples, labels, NUM_TRAIN_SAMPLES);

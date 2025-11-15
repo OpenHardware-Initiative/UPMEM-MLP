@@ -52,8 +52,8 @@ double *get_y(NETWORK *n, int layer_index, double *sample);
 double *get_z(NETWORK *n, int layer_index, double *sample);
 uint8_t **read_image_data(const char *filename, int *num_rows, const int num_cols);
 double sse(double *real, double *ideal, int length);
-void update_weights(NETWORK *n, int layer_index, double *sample, double* delta, double* previous_y);
-void apply_batch_gradients(NETWORK* n, int batch_size);
+void accumulate_gradients(NETWORK *n, int layer_index, double *sample, double* delta, double* previous_y);
+void apply_gradients(NETWORK* n, int batch_size);
 void multiply_matrix(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b);
 void transpose_matrix(const double *A, double *C, int rows, int cols);
 
