@@ -74,9 +74,17 @@ int main()
             if(batch_end > NUM_TRAIN_SAMPLES)
                 batch_end = NUM_TRAIN_SAMPLES;
 
-            for(int i=batch_start; i<batch_end; ++i) {
+            int actual_batch_size = batch_end - batch_start;
+
+            for(int i=batch_start, batch_ctr = 0; i<batch_end; ++i, batch_ctr++) {
                 for(int j=n->num_layers-1; j>=0; --j) {
+                    LAYER *lp = n->l+j;     // ptr to layer j of network n
+
                     double *d = get_delta(n, samples[i], labels[i], j);
+
+                    for(int k=0; k<lp->num_neurons; k++) {
+                        (lp->deltas+batch_ctr*lp->num_neurons)[k] = d[k];
+                    }
 
                     double *py = j ? get_y(n, j-1, samples[i]) : NULL;
                     if(j && !py) {
@@ -84,13 +92,19 @@ int main()
                         return 1;
                     }
 
-                    accumulate_gradients(n, j, samples[i], d, py);
+                    for(int k=0; k<lp->n->num_weights; k++) {
+                        (lp->inputs + batch_ctr * lp->n->num_weights)[k] = j ? py[k] : samples[i][k];
+                    }
 
                     free(d);
                     if(j) free(py);
                 }
             }
-            apply_gradients(n, batch_end-batch_start);
+
+            for(int l_idx=0; l_idx<n->num_layers; l_idx++)
+                accumulate_layer_gradients(n->l+l_idx, actual_batch_size);
+
+            apply_gradients(n, actual_batch_size);
         }
 
         double *loss_new = get_total_loss(n, samples, labels, NUM_TRAIN_SAMPLES);
