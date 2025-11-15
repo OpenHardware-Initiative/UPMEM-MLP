@@ -44,17 +44,19 @@ int main()
     free_uint8_matrix(sample_data, sample_rows);
     free_uint8_matrix(label_data, label_rows);
 
-#ifdef DEBUG
-    printf("PROGRAM RUN IN DEBUG MODE\n\n");
+#ifdef VERBOSE
+    printf("PROGRAM RUN IN VERBOSE MODE\n\n");
 
     // print samples & labels to check if all is saved correctly into program memory
     printf("Samples:\n");
     print_double_matrix(samples, 2, NUM_FEATURES+1);
+    printf("\n");
 
     printf("Labels:\n");
     print_double_matrix(labels, 5, NUM_LABELS);
+    printf("\n");
 
-    printf("Starting training...\n");
+    printf("Starting training...\n\n");
 #endif
 
     int num_batches = (NUM_TRAIN_SAMPLES + BATCH_SIZE - 1) / BATCH_SIZE;
@@ -116,8 +118,8 @@ int main()
 
         epoch++;
         
-#ifdef DEBUG
-        printf("Epoch %d --- loss_delta = %.12lf\n", epoch, loss_delta);
+#ifdef VERBOSE
+        printf("Epoch %-2d --- loss_delta = %.12lf\n", epoch, loss_delta);
 #endif
 
         if(loss_delta < EPSILON || epoch == MAX_EPOCH)
@@ -127,6 +129,7 @@ int main()
     printf("Training complete in %d epochs\n", epoch);
 
 #ifdef DEBUG
+    printf("\nPROGRAM RUN IN DEBUG MODE\n\nWEIGHTS\n\n");
     for(int i=0; i<num_layers; i++) {
         LAYER *lp = n->l+i;             // ptr to i-th layer of the network n
         for(int j=0; j<lp->num_neurons; j++) {

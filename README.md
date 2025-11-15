@@ -72,7 +72,8 @@ gcc -Iinclude src/*.c -o mlp -lm
 
 With this command, you can use:
 
-- `-DDEBUG` for the debug mode, which delivers a richer printout
+- `-DVERBOSE` for the verbose mode, which delivers a richer printout
+- `-DDEBUG` for the debug mode, which prints all weights for each layer at the end
 - `-DBATCH_SIZE=...` to configure the batch size used during training
 - `-DMAX_EPOCH=...` to configure the maximum number of epochs the training can run for
 - `-DEPSILON=...` to configure EPSILON from the command line
