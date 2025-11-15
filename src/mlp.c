@@ -44,15 +44,13 @@ int main()
     free_uint8_matrix(sample_data, sample_rows);
     free_uint8_matrix(label_data, label_rows);
 
-#ifdef VERBOSE
-    printf("PROGRAM RUN IN VERBOSE MODE\n\n");
-
+#ifdef DEBUG
     // print samples & labels to check if all is saved correctly into program memory
-    printf("Samples:\n");
+    printf("===== Samples =====\n\n");
     print_double_matrix(samples, 2, NUM_FEATURES+1);
     printf("\n");
 
-    printf("Labels:\n");
+    printf("===== Labels =====\n\n");
     print_double_matrix(labels, 5, NUM_LABELS);
     printf("\n");
 
@@ -129,7 +127,7 @@ int main()
     printf("Training complete in %d epochs\n", epoch);
 
 #ifdef DEBUG
-    printf("\nPROGRAM RUN IN DEBUG MODE\n\nWEIGHTS\n\n");
+    printf("\n===== Weights =====\n\n");
     for(int i=0; i<num_layers; i++) {
         LAYER *lp = n->l+i;             // ptr to i-th layer of the network n
         for(int j=0; j<lp->num_neurons; j++) {
