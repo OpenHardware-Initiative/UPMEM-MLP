@@ -10,6 +10,12 @@ void free_layer(LAYER *l)
     }
     free(l->n);
     l->n = NULL;
+
+    free(l->inputs);
+    free(l->deltas);
+    l->inputs = NULL;
+    l->deltas = NULL;
+    
     l->num_neurons = 0;
 }
 
