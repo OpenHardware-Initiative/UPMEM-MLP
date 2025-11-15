@@ -7,7 +7,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifndef LEARNING_RATE
 #define LEARNING_RATE 0.1
+#endif
 
 #ifndef BATCH_SIZE
 #define BATCH_SIZE 1
@@ -17,7 +19,9 @@
 #define EPSILON 0.0000005
 #endif
 
+#ifndef MOMENTUM
 #define MOMENTUM 0.8
+#endif
 
 #ifndef MAX_EPOCH
 #define MAX_EPOCH 30

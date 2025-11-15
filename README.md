@@ -76,7 +76,9 @@ With this command, you can use:
 - `-DDEBUG` for the debug mode, which prints a couple samples & labels at the beginning and all weights at the end
 - `-DBATCH_SIZE=...` to configure the batch size used during training
 - `-DMAX_EPOCH=...` to configure the maximum number of epochs the training can run for
-- `-DEPSILON=...` to configure EPSILON from the command line
+- `-DEPSILON=...` to configure epsilon from the command line
+- `-DLEARNING_RATE=...` to configure learning rate from the command line
+- `-DMOMENTUM=...` to configure momentum from the command line
 - `-DNUM_TRAIN_SAMPLES=...` to configure from the command line how many samples the model should be trained with
 - `-DTRAINING_IMAGES_FILE=...` to configure the path to the text file samples should be sourced from
 - `-DTRAINING_LABELS_FILE=...` to configure the path to the text file labels should be sourced from
