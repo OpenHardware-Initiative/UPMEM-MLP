@@ -61,6 +61,8 @@ int main()
 
     while(1) {
 
+        double learning_rate_epoch = LEARNING_RATE * pow(DECAY_RATE, epoch);
+
         double *loss_prev = get_total_loss(n, samples, labels, NUM_TRAIN_SAMPLES);
         if(!loss_prev) {
             fprintf(stderr, "Error 10014\n");
@@ -98,7 +100,7 @@ int main()
             }
 
             for(int l_idx=0; l_idx<n->num_layers; l_idx++)
-                accumulate_layer_gradients(n->l+l_idx, actual_batch_size);
+                accumulate_layer_gradients(n->l+l_idx, actual_batch_size, learning_rate_epoch);
 
             apply_gradients(n, actual_batch_size);
         }

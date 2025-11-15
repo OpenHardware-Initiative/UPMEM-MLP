@@ -1,6 +1,6 @@
 #include "mlp.h"
 
-void accumulate_layer_gradients(LAYER *l, int batch_size)
+void accumulate_layer_gradients(LAYER *l, int batch_size, double learning_rate)
 {
     if(batch_size <= 0)
         return;
@@ -26,7 +26,7 @@ void accumulate_layer_gradients(LAYER *l, int batch_size)
         NEURON *current_neuron = l->n+n_idx;
 
         for(int w_idx=0; w_idx<num_weights; w_idx++) {
-            current_neuron->batch_dw[w_idx] += LEARNING_RATE * gradient[n_idx * num_weights + w_idx];
+            current_neuron->batch_dw[w_idx] += learning_rate * gradient[n_idx * num_weights + w_idx];
         }
     }
 

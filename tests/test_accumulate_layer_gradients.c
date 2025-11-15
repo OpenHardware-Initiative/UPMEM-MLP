@@ -25,7 +25,7 @@ int test_accumulate_layer_gradients()
         for(int j=0; j<5; j++)
             batch_dw_ideal[i][j] += LEARNING_RATE * first_layer->inputs[j];
 
-    accumulate_layer_gradients(n->l+0, 1);
+    accumulate_layer_gradients(n->l+0, 1, LEARNING_RATE);
 
     for(int i=0; i<4; i++)
         for(int j=0; j<5; j++)

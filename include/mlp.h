@@ -11,6 +11,10 @@
 #define BATCH_SIZE 1
 #endif
 
+#ifndef DECAY_RATE
+#define DECAY_RATE 0.95
+#endif
+
 #ifndef EPSILON
 #define EPSILON 0.0000005
 #endif
@@ -46,7 +50,7 @@ typedef struct {
     LAYER *l;
 } NETWORK;
 
-void accumulate_layer_gradients(LAYER *l, int batch_size);
+void accumulate_layer_gradients(LAYER *l, int batch_size, double learning_rate);
 void apply_gradients(NETWORK *n, int batch_size);
 double drand();
 double get_activation(double x);

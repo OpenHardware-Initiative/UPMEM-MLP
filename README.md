@@ -78,6 +78,7 @@ With this command, you can use:
 - `-DMAX_EPOCH=...` to configure the maximum number of epochs the training can run for
 - `-DEPSILON=...` to configure epsilon from the command line
 - `-DLEARNING_RATE=...` to configure learning rate from the command line
+- `-DDECAY_RATE=...` to configure the decay rate of the learning rate
 - `-DMOMENTUM=...` to configure momentum from the command line
 - `-DNUM_TRAIN_SAMPLES=...` to configure from the command line how many samples the model should be trained with
 - `-DTRAINING_SAMPLES_FILE=...` to configure the path to the text file samples should be sourced from
