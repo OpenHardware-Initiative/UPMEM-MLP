@@ -111,14 +111,14 @@ int main()
 
         double loss_delta = fabs(*loss_new - *loss_prev);
 
-        free(loss_prev);
-        free(loss_new);
-
         epoch++;
         
 #ifdef VERBOSE
-        printf("Epoch %-2d --- loss_delta = %.12lf\n", epoch, loss_delta);
+        printf("Epoch %-3d --- Lost Delta = %.9lf --- Final Loss = %.6lf\n", epoch, loss_delta, *loss_new);
 #endif
+
+        free(loss_prev);
+        free(loss_new);
 
         if(loss_delta < EPSILON || epoch == MAX_EPOCH)
             break;
