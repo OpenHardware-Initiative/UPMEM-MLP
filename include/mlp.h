@@ -63,6 +63,7 @@ LAYER *init_layer(int num_neurons, int num_weights_per_neuron, int batch_size);
 NETWORK *init_network(int num_inputs, int num_layers, int *num_inputs_per_layer, int batch_size);
 NEURON *init_neuron(int num_weights);
 void multiply_matrix(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b);
+void multiply_matrix_naive(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b);
 uint8_t **read_image_data(const char *filename, int *num_rows, const int num_cols);
 double sse(double *real, double *ideal, int length);
 void transpose_matrix(const double *A, double *C, int rows, int cols);

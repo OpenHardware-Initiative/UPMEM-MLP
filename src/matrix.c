@@ -2,6 +2,11 @@
 
 void multiply_matrix(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b)
 {
+    multiply_matrix_naive(A, B, C, rows_a, cols_a, cols_b);
+}
+
+void multiply_matrix_naive(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b)
+{
     for(int i=0; i<rows_a; i++) {
         for(int j=0; j<cols_b; j++) {
             double sum = 0.0;
