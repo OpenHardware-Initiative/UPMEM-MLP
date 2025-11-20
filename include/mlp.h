@@ -31,6 +31,8 @@
 #define MOMENTUM 0.8
 #endif
 
+#define TILE_SIZE 16
+
 extern unsigned int rseed;
 
 typedef struct {
