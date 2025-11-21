@@ -15,19 +15,29 @@ jobs:
           submodules: 'recursive'
 
       - name: Install dependencies
-        run: sudo apt update && sudo apt install -y build-essential
+        run: | 
+          sudo apt update && sudo apt install -y build-essential
+          sudo ./.github/build_upmem_toolchain.sh
 
       - name: Create build directory
-        run: mkdir build
+        run: |
+          source /usr/local/bin/upmem-2024.2.0-Linux-x86_64/upmem_env.sh
+          mkdir build
       
       - name: Run CMake
         working-directory: build
-        run: cmake ..
+        run: |
+          source /usr/local/bin/upmem-2024.2.0-Linux-x86_64/upmem_env.sh
+          cmake ..
 
       - name: Build
         working-directory: build
-        run: make
+        run: |
+          source /usr/local/bin/upmem-2024.2.0-Linux-x86_64/upmem_env.sh
+          make
 
       - name: Run the tests
         working-directory: build
-        run: make test
+        run: |
+          source /usr/local/bin/upmem-2024.2.0-Linux-x86_64/upmem_env.sh
+          make test
