@@ -68,7 +68,7 @@ void multiply_matrix_upmem(const double *A, const double *B, double *C, int rows
     struct dpu_set_t dpus, dpu;
 
     DPU_ASSERT(dpu_alloc(NUM_DPU, NULL, &dpus));
-    DPU_ASSERT(dpu_load(dpus, "build/dpu_program", NULL));
+    DPU_ASSERT(dpu_load(dpus, DPU_BINARY_PATH, NULL));
 
     uint32_t dpu_rows_a_max = (rows_a + NUM_DPU - 1) / NUM_DPU;
 

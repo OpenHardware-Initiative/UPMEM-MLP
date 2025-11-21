@@ -1,6 +1,5 @@
 matmul.c
 matrices.h
-dpu/
 *.o
 *.out
 training_images.txt

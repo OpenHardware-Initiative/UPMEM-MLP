@@ -10,6 +10,8 @@
 
 #define NUM_DPU 16
 
+#define DPU_BINARY_PATH "build/dpu_program"
+
 typedef struct {
     uint32_t rows_a;
     uint32_t cols_a;
