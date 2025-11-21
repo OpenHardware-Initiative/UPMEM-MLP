@@ -68,12 +68,16 @@ void multiply_matrix_upmem(const double *A, const double *B, double *C, int rows
     struct dpu_set_t dpus, dpu;
 
     DPU_ASSERT(dpu_alloc(NUM_DPU, NULL, &dpus));
+    DPU_ASSERT(dpu_load(dpus, DPU_BINARY_PATH, NULL));
+
+    unsigned int bytes_b = cols_a * cols_b * sizeof(double);
+    DPU_ASSERT(dpu_broadcast_to(dpus, "B_whole", 0, B, bytes_b, DPU_XFER_DEFAULT));
+
+    uint32_t dpu_rows_a_max = (rows_a + NUM_DPU - 1) / NUM_DPU;
 
     uint32_t dpu_idx = 0;
     DPU_FOREACH(dpus, dpu) {
-        DPU_ASSERT(dpu_load(dpu, DPU_BINARY_PATH, NULL));
 
-        uint32_t dpu_rows_a_max = (rows_a + NUM_DPU - 1) / NUM_DPU;
         uint32_t row_start = dpu_idx * dpu_rows_a_max;
         uint32_t dpu_rows_a_actual = (row_start >= rows_a) ? 0
                                    : (dpu_rows_a_max > rows_a - row_start) ? (rows_a - row_start)
@@ -102,9 +106,6 @@ void multiply_matrix_upmem(const double *A, const double *B, double *C, int rows
             free(A_chunk);
         }
 
-        unsigned int bytes_b = cols_a * cols_b * sizeof(double);
-        DPU_ASSERT(dpu_copy_to(dpu, "B_whole", 0, B, bytes_b));
-
         dpu_idx++;
     }
 
@@ -112,7 +113,7 @@ void multiply_matrix_upmem(const double *A, const double *B, double *C, int rows
 
     dpu_idx = 0;
     DPU_FOREACH(dpus, dpu) {
-        uint32_t dpu_rows_a_max = (rows_a + NUM_DPU - 1) / NUM_DPU;
+        
         uint32_t row_start = dpu_idx * dpu_rows_a_max;
         uint32_t dpu_rows_a_actual = (row_start >= rows_a) ? 0
                                    : (dpu_rows_a_max > rows_a - row_start) ? (rows_a - row_start)
