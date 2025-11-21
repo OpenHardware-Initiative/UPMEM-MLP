@@ -3,6 +3,8 @@
 #include "mlp.h"
 #include "upmem.h"
 
+struct dpu_set_t dpus, dpu;
+
 void multiply_matrix(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b)
 {
     double tileA[TILE_SIZE][TILE_SIZE];
@@ -14,6 +16,9 @@ void multiply_matrix(const double *A, const double *B, double *C, int rows_a, in
             C[i * cols_b + j] = 0;
         }
     }
+
+    DPU_ASSERT(dpu_alloc(NUM_DPU, NULL, &dpus));
+    DPU_ASSERT(dpu_load(dpus, DPU_BINARY_PATH, NULL));
 
     for(int ii=0; ii<rows_a; ii+=TILE_SIZE) {
         for(int jj=0; jj<cols_b; jj+=TILE_SIZE) {
@@ -48,6 +53,8 @@ void multiply_matrix(const double *A, const double *B, double *C, int rows_a, in
             }
         }
     }
+
+    DPU_ASSERT(dpu_free(dpus));
 }
 
 void multiply_matrix_naive(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b)
@@ -65,11 +72,7 @@ void multiply_matrix_naive(const double *A, const double *B, double *C, int rows
 
 void multiply_matrix_upmem(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b)
 {
-    struct dpu_set_t dpus, dpu;
-
-    DPU_ASSERT(dpu_alloc(NUM_DPU, NULL, &dpus));
-    DPU_ASSERT(dpu_load(dpus, DPU_BINARY_PATH, NULL));
-
+    
     unsigned int bytes_b = cols_a * cols_b * sizeof(double);
     DPU_ASSERT(dpu_broadcast_to(dpus, "B_whole", 0, B, bytes_b, DPU_XFER_DEFAULT));
 
@@ -137,8 +140,6 @@ void multiply_matrix_upmem(const double *A, const double *B, double *C, int rows
 
         dpu_idx++;
     }
-
-    DPU_ASSERT(dpu_free(dpus));
 }
 
 void transpose_matrix(const double* A, double *C, int rows, int cols)
