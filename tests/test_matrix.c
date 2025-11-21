@@ -12,20 +12,29 @@ int test_multiply_matrix()
                            3.0, 3.0,
                            4.0, 0.0};
     
-    // result matrix (initialized with random double values [0.0, 20.0])
+    // result matrices (initialized with random double values [0.0, 20.0])
     double matrixC[2*2];
+    double matrixD[2*2];
     for(int i=0; i<2*2; i++) {
         matrixC[i] = ((double)rand() / (double)RAND_MAX) * 20;
+        matrixD[i] = ((double)rand() / (double)RAND_MAX) * 20;
     }
     
     // ideal result
     double matrixR[2*2] = {20.0, 12.0,
                            39.0, 15.0};
 
-    multiply_matrix(matrixA, matrixB, matrixC, 2, 3, 2);
+    multiply_matrix_naive(matrixA, matrixB, matrixC, 2, 3, 2);
+
+    multiply_matrix_upmem(matrixA, matrixB, matrixD, 2, 3, 2);
 
     for(int i=0; i<2*2; i++) {
-        test_result_pass_fail |= matrixC[i] == matrixR[i];
+        printf("%lf ", matrixC[i]);
+    }
+
+    for(int i=0; i<2*2; i++) {
+        test_result_pass_fail &= matrixC[i] == matrixR[i];
+        test_result_pass_fail &= matrixC[i] == matrixD[i];
     }
 
     return test_result_pass_fail;
