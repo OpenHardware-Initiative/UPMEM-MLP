@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <dpu.h>
 #include <dpu_log.h>
 #include "mlp.h"
@@ -16,6 +17,8 @@ void multiply_matrix(const double *A, const double *B, double *C, int rows_a, in
 
 void multiply_matrix_upmem(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b)
 {
+    assert(TILE_SIZE / NUM_DPU <= ROWS_A_PER_DPU_MAX);
+
     double tileA[TILE_SIZE][TILE_SIZE];
     double tileB[TILE_SIZE][TILE_SIZE];
     double tileC[TILE_SIZE][TILE_SIZE];
@@ -80,6 +83,9 @@ void multiply_matrix_naive(const double *A, const double *B, double *C, int rows
 
 void process_tile_upmem(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b)
 {
+    assert(rows_a <= ROWS_A_MAX);
+    assert(cols_a <= COLS_A_MAX);
+    assert(cols_b <= COLS_B_MAX);
     
     unsigned int bytes_b = cols_a * cols_b * sizeof(double);
     DPU_ASSERT(dpu_broadcast_to(dpus, "B_whole", 0, B, bytes_b, DPU_XFER_DEFAULT));
