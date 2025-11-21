@@ -7,8 +7,11 @@ struct dpu_set_t dpus, dpu;
 
 void multiply_matrix(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b)
 {
+#ifdef UPMEM
     multiply_matrix_upmem(A, B, C, rows_a, cols_a, cols_b);
-    // multiply_matrix_naive(A, B, C, rows_a, cols_a, cols_b);
+#else
+    multiply_matrix_naive(A, B, C, rows_a, cols_a, cols_b);
+#endif
 }
 
 void multiply_matrix_upmem(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b)
