@@ -3,18 +3,23 @@
 
 #include <stdint.h>
 
-#define ROWS_A_MAX 96
-#define COLS_A_MAX 96
-#define COLS_B_MAX 96
-#define ROWS_A_PER_DPU_MAX 16
-
-#ifndef NUM_DPU
-#define NUM_DPU 16
-#endif
+#define ROWS_A_MAX 320
+#define COLS_A_MAX 320
+#define COLS_B_MAX 320
 
 #ifndef DPU_BINARY_PATH
 #define DPU_BINARY_PATH "build/dpu_program"
 #endif
+
+#ifndef NUM_DPU
+#define NUM_DPU 64
+#endif
+
+#ifndef TILE_SIZE
+#define TILE_SIZE 128
+#endif
+
+#define ROWS_A_PER_DPU_MAX ((ROWS_A_MAX + NUM_DPU - 1) / NUM_DPU)
 
 typedef struct {
     uint32_t rows_a;

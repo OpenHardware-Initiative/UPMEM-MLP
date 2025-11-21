@@ -32,7 +32,8 @@ add_custom_target(build_dpu_program ALL
 )
 
 add_compile_definitions(
-    NUM_DPU=1
+    # NUM_CPU=1     Important: This macro override was commented because it does not apply to the dpu-upmem-dpurte-clang execution above; and therefore causes mismatch between
+    #               dpu_program.c and the rest. So this file should avoid modifying dimensions set through macros in aforementioned header files.
     DPU_BINARY_PATH=\"./dpu_program\"
 )
 
