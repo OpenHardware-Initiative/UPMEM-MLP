@@ -67,7 +67,7 @@ python3 read_dataset.py
 3. Compile the application:
 
 ```bash
-gcc -Iinclude src/*.c -o mlp -lm
+make
 ```
 
 With this command, you can use:
@@ -86,11 +86,11 @@ With this command, you can use:
 
 ## Status
 
-UPMEM-MLP is a work in progress as of 2025-11-14.
+UPMEM-MLP is a work in progress as of 2025-11-21.
 
 ### To-Do
 
-- [ ] Adapt `multiply_matrix` for in-memory matrix multiplication on UPMEM
+- [ ] Evaluate and document acceleration achieved by matrix multiplication on UPMEM DIMM
 
 ## License
 
