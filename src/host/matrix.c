@@ -7,6 +7,12 @@ struct dpu_set_t dpus, dpu;
 
 void multiply_matrix(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b)
 {
+    multiply_matrix_upmem(A, B, C, rows_a, cols_a, cols_b);
+    // multiply_matrix_naive(A, B, C, rows_a, cols_a, cols_b);
+}
+
+void multiply_matrix_upmem(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b)
+{
     double tileA[TILE_SIZE][TILE_SIZE];
     double tileB[TILE_SIZE][TILE_SIZE];
     double tileC[TILE_SIZE][TILE_SIZE];
@@ -40,8 +46,7 @@ void multiply_matrix(const double *A, const double *B, double *C, int rows_a, in
                     }
                 }
     
-                // multiply_matrix_naive(&tileA[0][0], &tileB[0][0], &tileC[0][0], TILE_SIZE, TILE_SIZE, TILE_SIZE);
-                multiply_matrix_upmem(&tileA[0][0], &tileB[0][0], &tileC[0][0], TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                process_tile_upmem(&tileA[0][0], &tileB[0][0], &tileC[0][0], TILE_SIZE, TILE_SIZE, TILE_SIZE);
     
                 for(int row=0; row<TILE_SIZE; row++) {
                     for(int col=0; col<TILE_SIZE; col++) {
@@ -70,7 +75,7 @@ void multiply_matrix_naive(const double *A, const double *B, double *C, int rows
     }
 }
 
-void multiply_matrix_upmem(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b)
+void process_tile_upmem(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b)
 {
     
     unsigned int bytes_b = cols_a * cols_b * sizeof(double);

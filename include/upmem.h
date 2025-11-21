@@ -19,5 +19,6 @@ typedef struct {
 } dpu_args_t;
 
 void multiply_matrix_upmem(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b);
+void process_tile_upmem(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b);
 
 #endif
