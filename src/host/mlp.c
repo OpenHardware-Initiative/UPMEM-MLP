@@ -1,5 +1,6 @@
 #include "mlp.h"
 #include "mnist.h"
+#include "upmem.h"
 
 unsigned int rseed = 42;
 
@@ -140,6 +141,11 @@ int main()
         printf("\n\n");
     }
 #endif
+
+    // free DPUs if UPMEM was deployed
+    if(upmem_initialized) {
+        free_dpus();
+    }
 
     // memory cleanup before termination
     free_double_matrix(samples, NUM_TRAIN_SAMPLES);

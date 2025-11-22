@@ -27,6 +27,10 @@ typedef struct {
     uint32_t cols_b;
 } dpu_args_t;
 
+extern int upmem_initialized;
+
+void free_dpus();
+void init_dpus();
 void multiply_matrix_upmem(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b);
 void process_tile_upmem(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b);
 

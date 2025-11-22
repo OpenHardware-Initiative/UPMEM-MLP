@@ -1,5 +1,6 @@
 #include "mlp.h"
 #include "test.h"
+#include "upmem.h"
 
 int test_multiply_matrix()
 {
@@ -26,7 +27,9 @@ int test_multiply_matrix()
 
     multiply_matrix_naive(matrixA, matrixB, matrixC, 2, 3, 2);
 
+    init_dpus();
     multiply_matrix_upmem(matrixA, matrixB, matrixD, 2, 3, 2);
+    free_dpus();
 
     for(int i=0; i<2*2; i++) {
         printf("%lf ", matrixC[i]);
