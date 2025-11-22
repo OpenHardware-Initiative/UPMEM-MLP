@@ -16,7 +16,7 @@
 #endif
 
 #ifndef TILE_SIZE
-#define TILE_SIZE 128
+#define TILE_SIZE 256
 #endif
 
 #define ROWS_A_PER_DPU_MAX ((ROWS_A_MAX + NUM_DPU - 1) / NUM_DPU)

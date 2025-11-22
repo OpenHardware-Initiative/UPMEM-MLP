@@ -18,7 +18,10 @@ int main()
     if(!rows_a)
         return 0;
 
-    for(int i=0; i<rows_a; ++i) {
+    int chunk = rows_a / NR_TASKLETS;
+    int row_start = chunk * me();
+
+    for(int i=row_start; i<(row_start+chunk); ++i) {
         for(int j=0; j<cols_b; ++j) {
             double sum = 0;
             for(int k=0; k<cols_a; ++k) {
