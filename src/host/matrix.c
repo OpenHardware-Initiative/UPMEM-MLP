@@ -1,7 +1,7 @@
 #include "mlp.h"
 #include "upmem.h"
 
-void multiply_matrix(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b)
+void multiply_matrix(const float *A, const float *B, float *C, int rows_a, int cols_a, int cols_b)
 {
 #ifdef UPMEM
     init_dpus();
@@ -11,11 +11,11 @@ void multiply_matrix(const double *A, const double *B, double *C, int rows_a, in
 #endif
 }
 
-void multiply_matrix_naive(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b)
+void multiply_matrix_naive(const float *A, const float *B, float *C, int rows_a, int cols_a, int cols_b)
 {
     for(int i=0; i<rows_a; i++) {
         for(int j=0; j<cols_b; j++) {
-            double sum = 0.0;
+            float sum = 0.0;
             for(int k=0; k<cols_a; k++) {
                 sum += A[i*cols_a+k] * B[k*cols_b+j];
             }
@@ -24,7 +24,7 @@ void multiply_matrix_naive(const double *A, const double *B, double *C, int rows
     }
 }
 
-void transpose_matrix(const double* A, double *C, int rows, int cols)
+void transpose_matrix(const float* A, float *C, int rows, int cols)
 {
     for(int i=0; i<rows; i++) {
         for(int j=0; j<cols; j++) {

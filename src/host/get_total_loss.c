@@ -1,8 +1,8 @@
 #include "mlp.h"
 
-double *get_total_loss(NETWORK *n, double **samples, double **ideal, int nsamples)
+float *get_total_loss(NETWORK *n, float **samples, float **ideal, int nsamples)
 {
-    double *total_loss = (double*) malloc (sizeof(double));
+    float *total_loss = (float*) malloc (sizeof(float));
     if(!total_loss) {
         fprintf(stderr, "Error 10007\n");
         return NULL;
@@ -13,13 +13,13 @@ double *get_total_loss(NETWORK *n, double **samples, double **ideal, int nsample
     LAYER *last_layer = n->l+(n->num_layers-1);
 
     for(int i=0; i<nsamples; ++i) {
-        double *y = get_y(n, n->num_layers-1, samples[i]);
+        float *y = get_y(n, n->num_layers-1, samples[i]);
         if(!y) {
             fprintf(stderr, "Error 10008\n");
             free(total_loss);
             return NULL;
         }
-        *total_loss += sse(y, ideal[i], last_layer->num_neurons) / (double)nsamples;
+        *total_loss += sse(y, ideal[i], last_layer->num_neurons) / (float)nsamples;
         free(y);
     }
 

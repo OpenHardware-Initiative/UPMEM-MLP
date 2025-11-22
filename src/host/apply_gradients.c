@@ -15,11 +15,11 @@ void apply_gradients(NETWORK *n, int batch_size)
 
             for(int k=0; k<np->num_weights; k++)    // do the following for all weights "k" of said neuron:
             {
-                double previous_weight_update = np->w[k] - np->lw[k];
-                double momentum_term = MOMENTUM * previous_weight_update;
-                double gradient_term = np->batch_dw[k] / (double) batch_size;
+                float previous_weight_update = np->w[k] - np->lw[k];
+                float momentum_term = MOMENTUM * previous_weight_update;
+                float gradient_term = np->batch_dw[k] / (float) batch_size;
 
-                double old_weight = np->w[k];
+                float old_weight = np->w[k];
 
                 np->lw[k] = old_weight;
                 np->w[k] = old_weight + gradient_term + momentum_term;

@@ -2,9 +2,9 @@
 #include <defs.h>
 #include "upmem.h"
 
-__mram_noinit double A_chunk[TILE_SIZE * TILE_SIZE];
-__mram_noinit double B_whole[TILE_SIZE * TILE_SIZE];
-__mram_noinit double C_chunk[TILE_SIZE * TILE_SIZE];
+__mram_noinit float A_chunk[TILE_SIZE * TILE_SIZE];
+__mram_noinit float B_whole[TILE_SIZE * TILE_SIZE];
+__mram_noinit float C_chunk[TILE_SIZE * TILE_SIZE];
 
 __host dpu_args_t DPU_INPUT_ARGS;
 
@@ -23,7 +23,7 @@ int main()
 
     for(int i=row_start; i<(row_start+chunk); ++i) {
         for(int j=0; j<cols_b; ++j) {
-            double sum = 0;
+            float sum = 0;
             for(int k=0; k<cols_a; ++k) {
                 sum += A_chunk[i * cols_a + k] * B_whole[k * cols_b + j];
             }

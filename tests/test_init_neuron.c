@@ -6,8 +6,8 @@ int test_init_neuron()
     NEURON *n = init_neuron(2);
 
     // printf("%d\n", n->num_weights);
-    // printf("%lf\n", n->w[0]);
-    // printf("%lf\n", n->lw[0]);
+    // printf("%f\n", n->w[0]);
+    // printf("%f\n", n->lw[0]);
 
     return (n->num_weights == 2) && (n->w[0] <= 1) && (n->w[0] >= -1) && (n->lw[0] == n->w[0]);
 }

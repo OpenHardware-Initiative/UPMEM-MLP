@@ -6,23 +6,23 @@ int test_multiply_matrix()
 {
     int test_result_pass_fail = 1;
 
-    double matrixA[2*3] = {1.0, 2.0, 3.0, 
+    float matrixA[2*3] = {1.0, 2.0, 3.0, 
                            0.0, 5.0, 6.0};
     
-    double matrixB[3*2] = {2.0, 6.0,
+    float matrixB[3*2] = {2.0, 6.0,
                            3.0, 3.0,
                            4.0, 0.0};
     
-    // result matrices (initialized with random double values [0.0, 20.0])
-    double matrixC[2*2];
-    double matrixD[2*2];
+    // result matrices (initialized with random float values [0.0, 20.0])
+    float matrixC[2*2];
+    float matrixD[2*2];
     for(int i=0; i<2*2; i++) {
-        matrixC[i] = ((double)rand() / (double)RAND_MAX) * 20;
-        matrixD[i] = ((double)rand() / (double)RAND_MAX) * 20;
+        matrixC[i] = ((float)rand() / (float)RAND_MAX) * 20;
+        matrixD[i] = ((float)rand() / (float)RAND_MAX) * 20;
     }
     
     // ideal result
-    double matrixR[2*2] = {20.0, 12.0,
+    float matrixR[2*2] = {20.0, 12.0,
                            39.0, 15.0};
 
     multiply_matrix_naive(matrixA, matrixB, matrixC, 2, 3, 2);
@@ -32,7 +32,7 @@ int test_multiply_matrix()
     free_dpus();
 
     for(int i=0; i<2*2; i++) {
-        printf("%lf ", matrixC[i]);
+        printf("%f ", matrixC[i]);
     }
 
     for(int i=0; i<2*2; i++) {
@@ -47,17 +47,17 @@ int test_transpose_matrix()
 {
     int test_result_pass_fail = 1;
 
-    double matrixA[2*3] = {1.0, 2.0, 3.0, 
+    float matrixA[2*3] = {1.0, 2.0, 3.0, 
                            0.0, 5.0, 6.0};
 
-    // result matrix (initialized with random double values [0.0, 20.0])
-    double matrixT[3*2];
+    // result matrix (initialized with random float values [0.0, 20.0])
+    float matrixT[3*2];
     for(int i=0; i<3*2; i++) {
-        matrixT[i] = ((double)rand() / (double)RAND_MAX) * 20;
+        matrixT[i] = ((float)rand() / (float)RAND_MAX) * 20;
     }
 
     // ideal result
-    double matrixR[3*2] = {1.0, 0.0,
+    float matrixR[3*2] = {1.0, 0.0,
                            2.0, 5.0,
                            3.0, 6.0};
 

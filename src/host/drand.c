@@ -1,7 +1,7 @@
 #include "mlp.h"
 
-double drand()
+float drand()
 {
-    return (double)rand()/(double)RAND_MAX;
+    return (float)rand()/(float)RAND_MAX;
 }
 

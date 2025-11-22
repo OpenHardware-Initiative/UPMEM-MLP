@@ -1,12 +1,12 @@
 #include "mlp.h"
 #include "test.h"
 
-int test_activation(double x)
+int test_activation(float x)
 {
-    double activation_result = get_activation(x);
-    double activation_derivative_result = get_activation_derivative(x);
+    float activation_result = get_activation(x);
+    float activation_derivative_result = get_activation_derivative(x);
 
-    double expected_activation_derivative = 1 - pow(activation_result, 2);
+    float expected_activation_derivative = 1 - powf(activation_result, 2);
 
     if(abs(activation_derivative_result - expected_activation_derivative) < 1e-5)
         return 1;

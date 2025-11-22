@@ -2,7 +2,7 @@
 
 // preactivation -> get_y -> activation
 
-double *get_y(NETWORK *n, int layer_index, double *sample)
+float *get_y(NETWORK *n, int layer_index, float *sample)
 {
     LAYER *current_layer = n->l+layer_index;
     int is_current_layer_last_layer = (n->num_layers == layer_index + 1);
@@ -11,9 +11,9 @@ double *get_y(NETWORK *n, int layer_index, double *sample)
     if(!is_current_layer_last_layer) // add bias node
         y_size++;
 
-    double *z = get_z(n, layer_index, sample);
+    float *z = get_z(n, layer_index, sample);
 
-    double *y = (double *) malloc (sizeof(double)*y_size);
+    float *y = (float *) malloc (sizeof(float)*y_size);
     if(!y) {
         fprintf(stderr, "Error 10006\n");
         return NULL;

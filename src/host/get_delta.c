@@ -1,16 +1,16 @@
 #include "mlp.h"
 
-double *get_delta(NETWORK *n, double* sample, double* ideal, int layer_index)
+float *get_delta(NETWORK *n, float* sample, float* ideal, int layer_index)
 {
     int layer_size = (n->l+layer_index)->num_neurons;
 
-    double *d = (double*) malloc (sizeof(double) * layer_size);
+    float *d = (float*) malloc (sizeof(float) * layer_size);
     if(!d) {
         fprintf(stderr, "Error 10010\n");
         return NULL;
     }
 
-    double *z = get_z(n, layer_index, sample);
+    float *z = get_z(n, layer_index, sample);
     if(!z) {
         fprintf(stderr, "Error 10011\n");
         free(d);
@@ -21,7 +21,7 @@ double *get_delta(NETWORK *n, double* sample, double* ideal, int layer_index)
 
     if(is_current_layer_last_layer)
     {
-        double *y = get_y(n, layer_index, sample);
+        float *y = get_y(n, layer_index, sample);
         if(!y) {
             fprintf(stderr, "Error 10012\n");
             free(d);
@@ -36,7 +36,7 @@ double *get_delta(NETWORK *n, double* sample, double* ideal, int layer_index)
     }
     else
     {
-        double *next_d = get_delta(n, sample, ideal, layer_index+1);
+        float *next_d = get_delta(n, sample, ideal, layer_index+1);
         if(!next_d) {
             fprintf(stderr, "Error 10013\n");
             free(d);

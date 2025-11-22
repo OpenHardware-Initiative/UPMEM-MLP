@@ -4,7 +4,7 @@
 int test_get_y()
 {
     int num_neurons_per_layers[] = {3, 3};
-    double samples[] = {1, 1, 1, 1};
+    float samples[] = {1, 1, 1, 1};
 
     NETWORK *n = init_network(3, 2, num_neurons_per_layers, BATCH_SIZE);
 
@@ -23,12 +23,12 @@ int test_get_y()
     n->l[0].n[2].w[2] = 0.0;
     n->l[0].n[2].w[3] = 0.0;
 
-    double *y = get_y(n, 0, samples);
-    double *z = get_z(n, 0, samples);
+    float *y = get_y(n, 0, samples);
+    float *z = get_z(n, 0, samples);
 
-    // printf("y[0] == %.2lf\n", y[0]);
-    // printf("y[1] == %.2lf\n", y[1]);
-    // printf("y[2] == %.2lf\n", y[2]);
+    // printf("y[0] == %.2f\n", y[0]);
+    // printf("y[1] == %.2f\n", y[1]);
+    // printf("y[2] == %.2f\n", y[2]);
 
     int test_pass_fail = (y[0] == 1)
                         && (y[1] == get_activation(z[0]))

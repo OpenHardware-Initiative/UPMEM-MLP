@@ -1,11 +1,11 @@
 #include "mlp.h"
 
-double get_activation(double x)
+float get_activation(float x)
 {
-    return tanh(x);
+    return tanhf(x);
 }
 
-double get_activation_derivative(double x)
+float get_activation_derivative(float x)
 {
-    return 1.0 / pow(cosh(x), 2);
+    return 1.0 / powf(coshf(x), 2);
 }

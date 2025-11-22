@@ -6,8 +6,8 @@ int test_get_delta()
     int test_pass_fail = 1;
 
     int num_neurons_per_layers[] = {3, 3};
-    double samples[] = {1, 1, 1, 1};
-    double ideals[] = {3, 3, 3, 3};
+    float samples[] = {1, 1, 1, 1};
+    float ideals[] = {3, 3, 3, 3};
 
     NETWORK *n = init_network(3, 2, num_neurons_per_layers, BATCH_SIZE);
 
@@ -28,7 +28,7 @@ int test_get_delta()
 
     // test last layer delta
 
-    double *d_last_layer = get_delta(n, samples, ideals, 1);
+    float *d_last_layer = get_delta(n, samples, ideals, 1);
 
     for(int i=0; i<3; i++)
     {
@@ -37,7 +37,7 @@ int test_get_delta()
 
     // test before-last layer delta
 
-    double *d_first_layer = get_delta(n, samples, ideals, 0);
+    float *d_first_layer = get_delta(n, samples, ideals, 0);
 
     for(int i=0; i<3; i++)
     {

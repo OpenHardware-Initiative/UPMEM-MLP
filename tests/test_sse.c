@@ -3,11 +3,11 @@
 
 int test_sse()
 {
-    double real[]   = {3, 4, 4, 4};
-    double ideal[]  = {4, 4, 4, 4};
+    float real[]   = {3, 4, 4, 4};
+    float ideal[]  = {4, 4, 4, 4};
     int test_pass_fail = 1;
 
-    double sse_result = sse(real, ideal, 4);
+    float sse_result = sse(real, ideal, 4);
 
     test_pass_fail = test_pass_fail && (sse_result == 1);
 

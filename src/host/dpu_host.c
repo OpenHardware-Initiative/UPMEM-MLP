@@ -20,11 +20,11 @@ void init_dpus()
     }
 }
 
-void multiply_matrix_upmem(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b)
+void multiply_matrix_upmem(const float *A, const float *B, float *C, int rows_a, int cols_a, int cols_b)
 {
-    double tileA[TILE_SIZE][TILE_SIZE];
-    double tileB[TILE_SIZE][TILE_SIZE];
-    double tileC[TILE_SIZE][TILE_SIZE];
+    float tileA[TILE_SIZE][TILE_SIZE];
+    float tileB[TILE_SIZE][TILE_SIZE];
+    float tileC[TILE_SIZE][TILE_SIZE];
 
     for(int i=0; i<rows_a; ++i) {
         for(int j=0; j<cols_b; ++j) {
@@ -66,9 +66,9 @@ void multiply_matrix_upmem(const double *A, const double *B, double *C, int rows
     }
 }
 
-void process_tile_upmem(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b)
+void process_tile_upmem(const float *A, const float *B, float *C, int rows_a, int cols_a, int cols_b)
 {
-    unsigned int bytes_b = cols_a * cols_b * sizeof(double);
+    unsigned int bytes_b = cols_a * cols_b * sizeof(float);
     DPU_ASSERT(dpu_broadcast_to(dpus, "B_whole", 0, B, bytes_b, DPU_XFER_DEFAULT));
 
     uint32_t dpu_rows_a_max = (rows_a + NUM_DPU - 1) / NUM_DPU;
@@ -91,13 +91,13 @@ void process_tile_upmem(const double *A, const double *B, double *C, int rows_a,
 
         if(dpu_rows_a_actual) {
             uint32_t elems_a = dpu_rows_a_actual * cols_a;
-            uint32_t bytes_a = elems_a * sizeof(double);
+            uint32_t bytes_a = elems_a * sizeof(float);
 
-            double *A_chunk = (double*)malloc(bytes_a);
+            float *A_chunk = (float*)malloc(bytes_a);
 
             for(int r=0; r<dpu_rows_a_actual; ++r) {
                 unsigned int global_row = row_start + r;
-                memcpy(&A_chunk[r*cols_a], &A[global_row*cols_a], cols_a*sizeof(double));
+                memcpy(&A_chunk[r*cols_a], &A[global_row*cols_a], cols_a*sizeof(float));
             }
 
             DPU_ASSERT(dpu_copy_to(dpu, "A_chunk", 0, A_chunk, bytes_a));
@@ -119,15 +119,15 @@ void process_tile_upmem(const double *A, const double *B, double *C, int rows_a,
 
         if(dpu_rows_a_actual) {
             uint32_t elems_c = dpu_rows_a_actual * cols_b;
-            uint32_t bytes_c = elems_c * sizeof(double);
+            uint32_t bytes_c = elems_c * sizeof(float);
 
-            double *C_chunk = (double*)malloc(bytes_c);
+            float *C_chunk = (float*)malloc(bytes_c);
 
             DPU_ASSERT(dpu_copy_from(dpu, "C_chunk", 0, C_chunk, bytes_c));
 
             for(int r=0; r<dpu_rows_a_actual; ++r) {
                 unsigned int global_row = row_start + r;
-                memcpy(&C[global_row * cols_b], &C_chunk[r * cols_b], cols_b*sizeof(double));
+                memcpy(&C[global_row * cols_b], &C_chunk[r * cols_b], cols_b*sizeof(float));
             }
 
             free(C_chunk);

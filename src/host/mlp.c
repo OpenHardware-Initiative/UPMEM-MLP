@@ -21,16 +21,16 @@ int main()
         return 1;
     }
 
-    double **samples    = (double **) malloc (sizeof(double*)*NUM_TRAIN_SAMPLES);
-    double **labels     = (double **) malloc (sizeof(double*)*NUM_TRAIN_SAMPLES);
+    float **samples    = (float **) malloc (sizeof(float*)*NUM_TRAIN_SAMPLES);
+    float **labels     = (float **) malloc (sizeof(float*)*NUM_TRAIN_SAMPLES);
 
     uint8_t **sample_data   = read_image_data(TRAINING_SAMPLES_FILE, &sample_rows, NUM_FEATURES);
     uint8_t **label_data    = read_image_data(TRAINING_LABELS_FILE, &label_rows, 1);
 
     // save data into `samples` and `labels`
     for(size_t i=0; i<NUM_TRAIN_SAMPLES; ++i) {
-        *(samples+i)    = (double *) malloc (sizeof(double)*(NUM_FEATURES+1));
-        *(labels+i)     = (double *) malloc (sizeof(double)*NUM_LABELS);
+        *(samples+i)    = (float *) malloc (sizeof(float)*(NUM_FEATURES+1));
+        *(labels+i)     = (float *) malloc (sizeof(float)*NUM_LABELS);
         
         samples[i][0] = 0.0;   // bias
         for(size_t j=1; j<(NUM_FEATURES+1); ++j) {
@@ -48,11 +48,11 @@ int main()
 #ifdef DEBUG
     // print samples & labels to check if all is saved correctly into program memory
     printf("===== Samples =====\n\n");
-    print_double_matrix(samples, 2, NUM_FEATURES+1);
+    print_float_matrix(samples, 2, NUM_FEATURES+1);
     printf("\n");
 
     printf("===== Labels =====\n\n");
-    print_double_matrix(labels, 5, NUM_LABELS);
+    print_float_matrix(labels, 5, NUM_LABELS);
     printf("\n");
 
     printf("Starting training...\n\n");
@@ -62,9 +62,9 @@ int main()
 
     while(1) {
 
-        double learning_rate_epoch = LEARNING_RATE * pow(DECAY_RATE, epoch);
+        float learning_rate_epoch = LEARNING_RATE * powf(DECAY_RATE, epoch);
 
-        double *loss_prev = get_total_loss(n, samples, labels, NUM_TRAIN_SAMPLES);
+        float *loss_prev = get_total_loss(n, samples, labels, NUM_TRAIN_SAMPLES);
         if(!loss_prev) {
             fprintf(stderr, "Error 10014\n");
             return 1;
@@ -83,17 +83,17 @@ int main()
                 for(int j=n->num_layers-1; j>=0; --j) {
                     LAYER *lp = n->l+j;     // ptr to layer j of network n
 
-                    double *d = get_delta(n, samples[i], labels[i], j);
+                    float *d = get_delta(n, samples[i], labels[i], j);
 
-                    memcpy(lp->deltas+batch_ctr*lp->num_neurons, d, lp->num_neurons * sizeof(double));
+                    memcpy(lp->deltas+batch_ctr*lp->num_neurons, d, lp->num_neurons * sizeof(float));
 
-                    double *py = j ? get_y(n, j-1, samples[i]) : NULL;
+                    float *py = j ? get_y(n, j-1, samples[i]) : NULL;
                     if(j && !py) {
                         fprintf(stderr, "Error 10009\n");
                         return 1;
                     }
 
-                    memcpy(lp->inputs+batch_ctr*lp->n->num_weights, (j ? py : samples[i]), lp->n->num_weights * sizeof(double));
+                    memcpy(lp->inputs+batch_ctr*lp->n->num_weights, (j ? py : samples[i]), lp->n->num_weights * sizeof(float));
 
                     free(d);
                     if(j) free(py);
@@ -106,18 +106,18 @@ int main()
             apply_gradients(n, actual_batch_size);
         }
 
-        double *loss_new = get_total_loss(n, samples, labels, NUM_TRAIN_SAMPLES);
+        float *loss_new = get_total_loss(n, samples, labels, NUM_TRAIN_SAMPLES);
         if(!loss_new) {
             fprintf(stderr, "Error 10015\n");
             return 1;
         }
 
-        double loss_delta = fabs(*loss_new - *loss_prev);
+        float loss_delta = fabs(*loss_new - *loss_prev);
 
         epoch++;
         
 #ifdef VERBOSE
-        printf("Epoch %-3d --- Lost Delta = %.9lf --- Final Loss = %.6lf\n", epoch, loss_delta, *loss_new);
+        printf("Epoch %-3d --- Lost Delta = %.9f --- Final Loss = %.6f\n", epoch, loss_delta, *loss_new);
 #endif
 
         free(loss_prev);
@@ -135,7 +135,7 @@ int main()
         LAYER *lp = n->l+i;             // ptr to i-th layer of the network n
         for(int j=0; j<lp->num_neurons; j++) {
             NEURON *np = lp->n+j;       // ptr to j-th neuron of the i-th layer of network n
-            print_double_vector(np->w, np->num_weights);
+            print_float_vector(np->w, np->num_weights);
             printf("\n");
         }
         printf("\n\n");
@@ -148,8 +148,8 @@ int main()
     }
 
     // memory cleanup before termination
-    free_double_matrix(samples, NUM_TRAIN_SAMPLES);
-    free_double_matrix(labels, NUM_TRAIN_SAMPLES);
+    free_float_matrix(samples, NUM_TRAIN_SAMPLES);
+    free_float_matrix(labels, NUM_TRAIN_SAMPLES);
     free_network(n);
 
     return 0;

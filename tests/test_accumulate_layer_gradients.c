@@ -13,13 +13,13 @@ int test_accumulate_layer_gradients()
 
     // inputs is 1x5 matrix
     for(int i=0; i<1*5; i++)
-        first_layer->inputs[i] = ((double) rand() / (double) RAND_MAX) * 20;
+        first_layer->inputs[i] = ((float) rand() / (float) RAND_MAX) * 20;
 
     // deltas is a 1x4 identity matrix
     for(int i=0; i<1*4; i++)
         first_layer->deltas[i] = 1.0;
 
-    double batch_dw_ideal[4][5] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    float batch_dw_ideal[4][5] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     for(int i=0; i<4; i++)
         for(int j=0; j<5; j++)
