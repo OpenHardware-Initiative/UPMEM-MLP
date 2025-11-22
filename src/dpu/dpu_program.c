@@ -2,9 +2,9 @@
 #include <defs.h>
 #include "upmem.h"
 
-__mram_noinit double A_chunk[ROWS_A_PER_DPU_MAX * COLS_A_MAX];
-__mram_noinit double B_whole[COLS_A_MAX * COLS_B_MAX];
-__mram_noinit double C_chunk[ROWS_A_PER_DPU_MAX * COLS_B_MAX];
+__mram_noinit double A_chunk[TILE_SIZE * TILE_SIZE];
+__mram_noinit double B_whole[TILE_SIZE * TILE_SIZE];
+__mram_noinit double C_chunk[TILE_SIZE * TILE_SIZE];
 
 __host dpu_args_t DPU_INPUT_ARGS;
 

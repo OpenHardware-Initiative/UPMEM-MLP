@@ -13,8 +13,6 @@ void free_dpus()
 void init_dpus()
 {
     if(!upmem_initialized) {
-        assert(TILE_SIZE / NUM_DPU <= ROWS_A_PER_DPU_MAX);
-
         DPU_ASSERT(dpu_alloc(NUM_DPU, NULL, &dpus));
         DPU_ASSERT(dpu_load(dpus, DPU_BINARY_PATH, NULL));
 
@@ -70,10 +68,6 @@ void multiply_matrix_upmem(const double *A, const double *B, double *C, int rows
 
 void process_tile_upmem(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b)
 {
-    assert(rows_a <= ROWS_A_MAX);
-    assert(cols_a <= COLS_A_MAX);
-    assert(cols_b <= COLS_B_MAX);
-    
     unsigned int bytes_b = cols_a * cols_b * sizeof(double);
     DPU_ASSERT(dpu_broadcast_to(dpus, "B_whole", 0, B, bytes_b, DPU_XFER_DEFAULT));
 
