@@ -30,17 +30,17 @@ int test_get_y()
     // printf("y[1] == %.2f\n", y[1]);
     // printf("y[2] == %.2f\n", y[2]);
 
-    int test_pass_fail = (y[0] == 1)
-                        && (y[1] == get_activation(z[0]))
-                        && (y[2] == get_activation(z[1]));
+    int test_pass_fail = TEST_FLOAT_EQ(y[0], 1, EPS_TEST)
+                        && TEST_FLOAT_EQ(y[1], get_activation(z[0]), EPS_TEST)
+                        && TEST_FLOAT_EQ(y[2], get_activation(z[1]), EPS_TEST);
 
     y = get_y(n, 1, samples);
     z = get_z(n, 1, samples);
 
     test_pass_fail = test_pass_fail
-                    && (y[0] == get_activation(z[0]))
-                    && (y[1] == get_activation(z[1]))
-                    && (y[2] == get_activation(z[2]));
+                    && TEST_FLOAT_EQ(y[0], get_activation(z[0]), EPS_TEST)
+                    && TEST_FLOAT_EQ(y[1], get_activation(z[1]), EPS_TEST)
+                    && TEST_FLOAT_EQ(y[2], get_activation(z[2]), EPS_TEST);
 
     return test_pass_fail;
 }

@@ -29,7 +29,7 @@ int test_get_z()
     // printf("z[1] == %.2f\n", z[1]);
     // printf("z[2] == %.2f\n", z[2]);
 
-    int test_pass_fail = (z[0] == 2) && (z[1] == 6) && (z[2] == -1);
+    int test_pass_fail = TEST_FLOAT_EQ(z[0], 2, EPS_TEST) && TEST_FLOAT_EQ(z[1], 6, EPS_TEST) && TEST_FLOAT_EQ(z[2], -1, EPS_TEST);
 
     return test_pass_fail;
 }

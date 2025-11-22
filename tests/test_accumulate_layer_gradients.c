@@ -29,7 +29,7 @@ int test_accumulate_layer_gradients()
 
     for(int i=0; i<4; i++)
         for(int j=0; j<5; j++)
-            test_pass_fail &= batch_dw_ideal[i][j] == first_layer->n[i].batch_dw[j];
+            test_pass_fail &= TEST_FLOAT_EQ(batch_dw_ideal[i][j], first_layer->n[i].batch_dw[j], EPS_TEST);
 
     return test_pass_fail;
 }

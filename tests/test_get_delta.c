@@ -32,7 +32,9 @@ int test_get_delta()
 
     for(int i=0; i<3; i++)
     {
-        test_pass_fail &= (d_last_layer[i] == (ideals[i] - get_y(n, 1, samples)[i]) * get_activation_derivative(get_z(n, 1, samples)[i]));
+        test_pass_fail &= TEST_FLOAT_EQ(d_last_layer[i],
+                                        (ideals[i] - get_y(n, 1, samples)[i]) * get_activation_derivative(get_z(n, 1, samples)[i]),
+                                        EPS_TEST);
     }
 
     // test before-last layer delta
@@ -41,7 +43,9 @@ int test_get_delta()
 
     for(int i=0; i<3; i++)
     {
-        test_pass_fail &= (d_first_layer[i] == (d_last_layer[0] + d_last_layer[1] + d_last_layer[2]) * get_activation_derivative(get_z(n, 0, samples)[i]));
+        test_pass_fail &= TEST_FLOAT_EQ(d_first_layer[i],
+                                        (d_last_layer[0] + d_last_layer[1] + d_last_layer[2]) * get_activation_derivative(get_z(n, 0, samples)[i]),
+                                        EPS_TEST);
     }
 
     return test_pass_fail;
