@@ -15,6 +15,8 @@
 #define TILE_SIZE 512
 #endif
 
+#define EVAL_DPU_CC 458000000
+
 typedef struct {
     uint32_t rows_a;
     uint32_t cols_a;

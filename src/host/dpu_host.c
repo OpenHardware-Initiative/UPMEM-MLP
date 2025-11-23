@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <dpu.h>
+#include <x86intrin.h>
 #include "upmem.h"
 
 struct dpu_set_t dpus, dpu;
@@ -51,8 +52,13 @@ void multiply_matrix_upmem(const float *A, const float *B, float *C, int rows_a,
                         }
                     }
                 }
-    
+
+#ifdef EVAL
+                unsigned long long start = __rdtsc();
+                while(__rdtsc() - start < EVAL_DPU_CC);
+#else
                 process_tile_upmem(&tileA[0][0], &tileB[0][0], &tileC[0][0], TILE_SIZE, TILE_SIZE, TILE_SIZE);
+#endif
     
                 for(int row=0; row<TILE_SIZE; row++) {
                     for(int col=0; col<TILE_SIZE; col++) {

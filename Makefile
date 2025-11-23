@@ -20,6 +20,11 @@ ifeq ($(SAN), 1)
 	CFLAGS += -fsanitize=address,undefined,leak -fno-omit-frame-pointer -g
 endif
 
+EVAL ?= 0
+ifeq ($(EVAL), 1)
+	CFLAGS += -DEVAL
+endif
+
 all: clean
 	mkdir $(BUILD_DIR); \
 	$(DPU_UPMEM_CLANG) $(DPU_UPMEM_CFLAGS) -Iinclude -o build/dpu_program src/dpu/dpu_program.c; \

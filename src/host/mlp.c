@@ -1,6 +1,7 @@
 #include "mlp.h"
 #include "mnist.h"
 #include "upmem.h"
+#include <x86intrin.h>
 
 unsigned int rseed = 42;
 
@@ -59,6 +60,10 @@ int main()
 #endif
 
     int num_batches = (NUM_TRAIN_SAMPLES + BATCH_SIZE - 1) / BATCH_SIZE;
+
+#ifdef EVAL
+    unsigned long long cc_start = __rdtsc();
+#endif
 
     while(1) {
 
@@ -127,7 +132,10 @@ int main()
             break;
     }
 
-    printf("Training complete in %d epochs\n", epoch);
+#ifdef EVAL
+    unsigned long long cc_end = __rdtsc();
+    printf("Training complete | %lld cycles | %d epochs\n", cc_end-cc_start, epoch);
+#endif
 
 #ifdef DEBUG
     printf("\n===== Weights =====\n\n");
