@@ -12,7 +12,7 @@ int test_init_network()
     // printf("%d\n", n->l[1].num_neurons);
     // printf("%d\n", n->l[2].num_neurons);
     // printf("%d\n", n->l[0].n[0].num_weights);
-    // printf("%lf\n", n->l[0].n[0].lw[0]);
+    // printf("%f\n", n->l[0].n[0].lw[0]);
     // printf("%d\n", n->l[1].n[0].num_weights);
     // printf("%d\n", n->l[2].n[0].num_weights);
 

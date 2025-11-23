@@ -1,42 +1,93 @@
 # UPMEM-MLP
 
-UPMEM-MLP is an attempt at implementing a multilayer perceptron application in pure C and accelerating this application on the UPMEM platform.
+UPMEM-MLP implements a multilayer perceptron training application in C and accelerates this application on the UPMEM platform.
 
-[![Unit Tests](https://github.com/OpenHardware-Initiative/UPMEM-MLP/actions/workflows/unit_tests.yaml/badge.svg)](https://github.com/OpenHardware-Initiative/UPMEM-MLP/actions/workflows/unit_tests.yaml) [![Valgrind](https://github.com/OpenHardware-Initiative/UPMEM-MLP/actions/workflows/valgrind.yaml/badge.svg)](https://github.com/OpenHardware-Initiative/UPMEM-MLP/actions/workflows/valgrind.yaml)
+[![Unit Tests](https://github.com/OpenHardware-Initiative/UPMEM-MLP/actions/workflows/unit_tests.yaml/badge.svg)](https://github.com/OpenHardware-Initiative/UPMEM-MLP/actions/workflows/unit_tests.yaml) [![Memory Leak Tests](https://github.com/OpenHardware-Initiative/UPMEM-MLP/actions/workflows/memory_leak_tests.yaml/badge.svg)](https://github.com/OpenHardware-Initiative/UPMEM-MLP/actions/workflows/memory_leak_tests.yaml)
 
-## Requirements
+## Prerequisites
 
-- GCC or Clang
 - CMake 3.10 or higher
+- GCC
+- Python
 - UPMEM SDK
 
-### Installing UPMEM SDK
+<details>
+<summary><b>Installing UPMEM SDK</b></summary><br>
 
-To set up the UPMEM SDK on your system:
+1. Download UPMEM SDK tarball for your system from [this link](https://github.com/kagandikmen/upmem-sdk)
 
-1. Download UPMEM SDK tarball for your system from [this link](https://sdk.upmem.com/)
+> **NOTICE:** UPMEM SDK is no longer downloadable on UPMEM's official SDK [Downloads](https://sdk.upmem.com) page.
 
 2. Extract its content and (preferably) move it to a better place like `/usr/local/bin/`
 
-3. Add the shell script `upmem_env.sh`, which sets necessary environment variables, to be sourced into your `.bashrc` as in:
+3. Add the shell script `upmem_env.sh`, which sets necessary environment variables, to be sourced into your `.bashrc`:
 
 ```bash
-source /usr/local/bin/upmem-sdk/upmem_env.sh > /dev/null
+source /usr/local/bin/upmem-sdk/upmem_env.sh simulator > /dev/null
 ```
 
 4. Restart your shell session for the changes to become effective
 
-5. Test your setup using:
+5. Test your setup:
 
 ```bash
 which dpu-lldb
 ```
+---
+</details>
 
-which should, if correctly installed, return the path to the LLDB Debugger binary of UPMEM SDK
+## Getting Started
+
+1. Clone this repository and navigate inside it:
+
+```bash
+git clone https://github.com/OpenHardware-Initiative/UPMEM-MLP.git
+cd UPMEM-MLP
+```
+
+2. **(Optional, but recommended)** Create a Python virtual environment:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+3. Install Python requirements:
+
+```bash
+pip install -r requirements.txt
+```
+
+4. Extract training samples & labels:
+
+```bash
+python3 read_dataset.py
+```
+
+5. Compile the MLP:
+
+```bash
+make
+```
+
+6. Run the MLP:
+
+```bash
+./build/mlp
+```
+
+With this command, you can use:
+
+- `BATCH_SIZE=...` to configure the batch size used during training, which otherwise defaults to 20
+- `MAX_EPOCH=...` to configure the maximum number of epochs the training can run for, which otherwise defaults to 10
+- `NUM_TRAIN_SAMPLES=...` to configure from the command line how many samples the model should be trained with, which otherwise defaults to 200
+- `UPMEM=0` to turn off matrix multiplication on UPMEM
+- `SAN=1` to run the MLP with GCC sanitizer
+- `EVAL=1` to run the MLP in evaluation mode, which adds to the printout how many cycles are spent in training
 
 ## Running the Unit Tests
 
-To run the CMake test flow:
+UPMEM-MLP comes with unit tests, which can be found in `tests/`. Run these unit tests using:
 
 ```bash
 mkdir build
@@ -46,51 +97,9 @@ make
 make test
 ```
 
-## Compiling the Multilayer Perceptron Natively
-
-To natively run the C multilayer perceptron on your system:
-
-1. Create a Python virtual environment (optional, but recommended) and install requirements:
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-```
-
-2. Extract training samples & labels:
-
-```bash
-python3 read_dataset.py
-```
-
-3. Compile the application:
-
-```bash
-gcc -Iinclude src/*.c -o mlp -lm
-```
-
-With this command, you can use:
-
-- `-DVERBOSE` for the verbose mode, which prints loss deltas for all epochs
-- `-DDEBUG` for the debug mode, which prints a couple samples & labels at the beginning and all weights at the end
-- `-DBATCH_SIZE=...` to configure the batch size used during training
-- `-DMAX_EPOCH=...` to configure the maximum number of epochs the training can run for
-- `-DEPSILON=...` to configure epsilon from the command line
-- `-DLEARNING_RATE=...` to configure learning rate from the command line
-- `-DDECAY_RATE=...` to configure the decay rate of the learning rate
-- `-DMOMENTUM=...` to configure momentum from the command line
-- `-DNUM_TRAIN_SAMPLES=...` to configure from the command line how many samples the model should be trained with
-- `-DTRAINING_SAMPLES_FILE=...` to configure the path to the text file samples should be sourced from
-- `-DTRAINING_LABELS_FILE=...` to configure the path to the text file labels should be sourced from
-
 ## Status
 
-UPMEM-MLP is a work in progress as of 2025-11-14.
-
-### To-Do
-
-- [ ] Adapt `multiply_matrix` for in-memory matrix multiplication on UPMEM
+UPMEM-MLP is completed and being actively maintained as of 2025-11-23.
 
 ## License
 

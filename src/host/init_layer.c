@@ -9,13 +9,13 @@ LAYER *init_layer(int num_neurons, int num_weights_per_neuron, int batch_size)
 
     l->num_neurons = num_neurons;
 
-    l->inputs = (double*) malloc (batch_size * num_weights_per_neuron * sizeof(double));
+    l->inputs = (float*) malloc (batch_size * num_weights_per_neuron * sizeof(float));
     if(!l->inputs) {
         free(l);
         return NULL;
     }
 
-    l->deltas = (double*) malloc (batch_size * num_neurons * sizeof(double));
+    l->deltas = (float*) malloc (batch_size * num_neurons * sizeof(float));
     if(!l->deltas) {
         free(l->inputs);
         free(l);

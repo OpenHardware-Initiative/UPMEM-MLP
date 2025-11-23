@@ -35,13 +35,13 @@ extern unsigned int rseed;
 
 typedef struct {
     int num_weights;
-    double *w, *lw;
-    double *batch_dw;
+    float *w, *lw;
+    float *batch_dw;
 } NEURON;
 
 typedef struct {
     int num_neurons;
-    double *inputs, *deltas;
+    float *inputs, *deltas;
     NEURON *n;
 } LAYER;
 
@@ -50,22 +50,23 @@ typedef struct {
     LAYER *l;
 } NETWORK;
 
-void accumulate_layer_gradients(LAYER *l, int batch_size, double learning_rate);
+void accumulate_layer_gradients(LAYER *l, int batch_size, float learning_rate);
 void apply_gradients(NETWORK *n, int batch_size);
-double drand();
-double get_activation(double x);
-double get_activation_derivative(double x);
-double *get_delta(NETWORK *n, double *samples, double *ideal, int layer_index);
-double *get_total_loss(NETWORK *n, double **samples, double **ideal, int nsamples);
-double *get_y(NETWORK *n, int layer_index, double *sample);
-double *get_z(NETWORK *n, int layer_index, double *sample);
+float drand();
+float get_activation(float x);
+float get_activation_derivative(float x);
+float *get_delta(NETWORK *n, float *samples, float *ideal, int layer_index);
+float *get_total_loss(NETWORK *n, float **samples, float **ideal, int nsamples);
+float *get_y(NETWORK *n, int layer_index, float *sample);
+float *get_z(NETWORK *n, int layer_index, float *sample);
 LAYER *init_layer(int num_neurons, int num_weights_per_neuron, int batch_size);
 NETWORK *init_network(int num_inputs, int num_layers, int *num_inputs_per_layer, int batch_size);
 NEURON *init_neuron(int num_weights);
-void multiply_matrix(const double *A, const double *B, double *C, int rows_a, int cols_a, int cols_b);
+void multiply_matrix(const float *A, const float *B, float *C, int rows_a, int cols_a, int cols_b);
+void multiply_matrix_naive(const float *A, const float *B, float *C, int rows_a, int cols_a, int cols_b);
 uint8_t **read_image_data(const char *filename, int *num_rows, const int num_cols);
-double sse(double *real, double *ideal, int length);
-void transpose_matrix(const double *A, double *C, int rows, int cols);
+float sse(float *real, float *ideal, int length);
+void transpose_matrix(const float *A, float *C, int rows, int cols);
 
 //
 // utility functions
@@ -75,10 +76,10 @@ void free_layer(LAYER *l);
 void free_network(NETWORK *n);
 void free_neuron(NEURON *n);
 
-void free_double_matrix(double **addr, int nrows);
+void free_float_matrix(float **addr, int nrows);
 void free_uint8_matrix(uint8_t **addr, int nrows);
 
-void print_double_matrix(double **addr, int nrows, int ncols);
-void print_double_vector(double *addr, int nrows);
+void print_float_matrix(float **addr, int nrows, int ncols);
+void print_float_vector(float *addr, int nrows);
 
 #endif

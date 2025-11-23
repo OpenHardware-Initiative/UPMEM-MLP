@@ -7,7 +7,7 @@ int test_drand()
 
     for(int i=0; i<10; i++)
     {
-        double test_value = drand();
+        float test_value = drand();
 
         test_pass_fail &= (test_value >= 0.0) && (test_value <= 1.0);
     }

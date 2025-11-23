@@ -4,7 +4,7 @@
 int test_get_z()
 {
     int num_neurons_per_layers[] = {3, 3};
-    double samples[] = {1, 1, 1, 1};
+    float samples[] = {1, 1, 1, 1};
 
     NETWORK *n = init_network(3, 2, num_neurons_per_layers, BATCH_SIZE);
     
@@ -23,13 +23,13 @@ int test_get_z()
     n->l[0].n[2].w[2] = 0.0;
     n->l[0].n[2].w[3] = 0.0;
 
-    double *z = get_z(n, 0, samples);
+    float *z = get_z(n, 0, samples);
 
-    // printf("z[0] == %.2lf\n", z[0]);
-    // printf("z[1] == %.2lf\n", z[1]);
-    // printf("z[2] == %.2lf\n", z[2]);
+    // printf("z[0] == %.2f\n", z[0]);
+    // printf("z[1] == %.2f\n", z[1]);
+    // printf("z[2] == %.2f\n", z[2]);
 
-    int test_pass_fail = (z[0] == 2) && (z[1] == 6) && (z[2] == -1);
+    int test_pass_fail = TEST_FLOAT_EQ(z[0], 2, EPS_TEST) && TEST_FLOAT_EQ(z[1], 6, EPS_TEST) && TEST_FLOAT_EQ(z[2], -1, EPS_TEST);
 
     return test_pass_fail;
 }

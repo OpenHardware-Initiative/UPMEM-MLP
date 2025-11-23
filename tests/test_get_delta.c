@@ -6,8 +6,8 @@ int test_get_delta()
     int test_pass_fail = 1;
 
     int num_neurons_per_layers[] = {3, 3};
-    double samples[] = {1, 1, 1, 1};
-    double ideals[] = {3, 3, 3, 3};
+    float samples[] = {1, 1, 1, 1};
+    float ideals[] = {3, 3, 3, 3};
 
     NETWORK *n = init_network(3, 2, num_neurons_per_layers, BATCH_SIZE);
 
@@ -28,20 +28,24 @@ int test_get_delta()
 
     // test last layer delta
 
-    double *d_last_layer = get_delta(n, samples, ideals, 1);
+    float *d_last_layer = get_delta(n, samples, ideals, 1);
 
     for(int i=0; i<3; i++)
     {
-        test_pass_fail &= (d_last_layer[i] == (ideals[i] - get_y(n, 1, samples)[i]) * get_activation_derivative(get_z(n, 1, samples)[i]));
+        test_pass_fail &= TEST_FLOAT_EQ(d_last_layer[i],
+                                        (ideals[i] - get_y(n, 1, samples)[i]) * get_activation_derivative(get_z(n, 1, samples)[i]),
+                                        EPS_TEST);
     }
 
     // test before-last layer delta
 
-    double *d_first_layer = get_delta(n, samples, ideals, 0);
+    float *d_first_layer = get_delta(n, samples, ideals, 0);
 
     for(int i=0; i<3; i++)
     {
-        test_pass_fail &= (d_first_layer[i] == (d_last_layer[0] + d_last_layer[1] + d_last_layer[2]) * get_activation_derivative(get_z(n, 0, samples)[i]));
+        test_pass_fail &= TEST_FLOAT_EQ(d_first_layer[i],
+                                        (d_last_layer[0] + d_last_layer[1] + d_last_layer[2]) * get_activation_derivative(get_z(n, 0, samples)[i]),
+                                        EPS_TEST);
     }
 
     return test_pass_fail;

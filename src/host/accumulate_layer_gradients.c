@@ -1,6 +1,6 @@
 #include "mlp.h"
 
-void accumulate_layer_gradients(LAYER *l, int batch_size, double learning_rate)
+void accumulate_layer_gradients(LAYER *l, int batch_size, float learning_rate)
 {
     if(batch_size <= 0)
         return;
@@ -8,12 +8,12 @@ void accumulate_layer_gradients(LAYER *l, int batch_size, double learning_rate)
     int num_neurons = l->num_neurons;
     int num_weights = l->n->num_weights;
 
-    double *gradient = (double *) malloc (num_neurons * num_weights * sizeof(double));
+    float *gradient = (float *) malloc (num_neurons * num_weights * sizeof(float));
     if(!gradient) {
         return;
     }
 
-    double *deltas_T = (double*) malloc (num_neurons * batch_size * sizeof(double));
+    float *deltas_T = (float*) malloc (num_neurons * batch_size * sizeof(float));
     if(!deltas_T) {
         free(gradient);
         return;

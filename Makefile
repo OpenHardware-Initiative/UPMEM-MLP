@@ -1,17 +1,34 @@
-CLANG = dpu-upmem-dpurte-clang
-SOURCE = matmul
-CFLAGS += -O0 -DNR_TASKLETS=6
-FILESTODELETE = matmul.c dpu/
+DPU_UPMEM_CLANG = dpu-upmem-dpurte-clang
+DPU_UPMEM_CFLAGS += -DNR_TASKLETS=16
 
-all:
-	python3 generate.py && \
-	for test in $$(seq 0 15); do \
-		$(CLANG) $(CFLAGS) -o dpu/dpu$$test/${SOURCE}.o dpu/dpu$$test/${SOURCE}.c; \
-	done
-	gcc --std=c99 host.c -o host.o `dpu-pkg-config --cflags --libs dpu`
+BATCH_SIZE ?= 20
+MAX_EPOCH ?= 10
+NUM_TRAIN_SAMPLES ?= 200
+
+CFLAGS += -std=c99 -Iinclude -D_GNU_SOURCE -DVERBOSE -DDEBUG
+CFLAGS += -DBATCH_SIZE=$(BATCH_SIZE) -DMAX_EPOCH=$(MAX_EPOCH) -DNUM_TRAIN_SAMPLES=$(NUM_TRAIN_SAMPLES)
+
+BUILD_DIR = build/
+
+UPMEM ?= 1
+ifeq ($(UPMEM), 1)
+	CFLAGS += -DUPMEM
+endif
+
+SAN ?= 0
+ifeq ($(SAN), 1)
+	CFLAGS += -fsanitize=address,undefined,leak -fno-omit-frame-pointer -g
+endif
+
+EVAL ?= 0
+ifeq ($(EVAL), 1)
+	CFLAGS += -DEVAL
+endif
+
+all: clean
+	mkdir $(BUILD_DIR); \
+	$(DPU_UPMEM_CLANG) $(DPU_UPMEM_CFLAGS) -Iinclude -o build/dpu_program src/dpu/dpu_program.c; \
+	gcc src/host/*.c $(CFLAGS) -o build/mlp -lm `dpu-pkg-config --cflags --libs dpu`
 
 clean:
-	rm -rf *.o ${FILESTODELETE}
-
-clean_all:
-	rm -rf *.o .vscode/ .cache/ .__pycache__/ training_images.txt training_labels.txt
+	rm -rf $(BUILD_DIR)

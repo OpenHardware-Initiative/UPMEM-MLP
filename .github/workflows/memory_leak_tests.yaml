@@ -1,4 +1,4 @@
-name: Valgrind
+name: Memory Leak Tests
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   memcheck:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout repository
@@ -19,21 +19,25 @@ jobs:
           sudo apt update
           sudo apt install -y build-essential valgrind
           pip3 install numpy
+          sudo bash .github/build_upmem_toolchain.sh
 
       - name: Extract training samples & labels
         run: python3 read_dataset.py
 
-      - name: Compile MLP
-        run: gcc -g -DEPSILON=0.5 -DNUM_TRAIN_SAMPLES=2 -Iinclude src/*.c -o mlp -lm
+      - name: Compile MLP without sanitizer or UPMEM
+        run: |
+          source /usr/local/bin/upmem-2024.2.0-Linux-x86_64/upmem_env.sh simulator
+          make SAN=0 UPMEM=0
 
       - name: Run Valgrind
         run: | 
+          source /usr/local/bin/upmem-2024.2.0-Linux-x86_64/upmem_env.sh simulator
           valgrind --leak-check=full \
                    --show-leak-kinds=all \
                    --track-origins=yes \
                    --error-exitcode=1 \
                    --log-file=valgrind.txt \
-                   ./mlp > /dev/null
+                   ./build/mlp > /dev/null
       
       - name: Save Valgrind log
         if: always()
@@ -41,3 +45,14 @@ jobs:
         with:
           name: valgrind_log
           path: valgrind.txt
+
+      - name: Compile MLP with sanitizer and UPMEM
+        run: |
+          source /usr/local/bin/upmem-2024.2.0-Linux-x86_64/upmem_env.sh simulator
+          make clean
+          make SAN=1 UPMEM=1
+
+      - name: Run with sanitizer
+        run: |
+          source /usr/local/bin/upmem-2024.2.0-Linux-x86_64/upmem_env.sh simulator
+          ./build/mlp > /dev/null

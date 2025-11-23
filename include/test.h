@@ -11,4 +11,8 @@ if(test_result == 0) \
 printf("PASS\n"); \
 return 0; \
 
+#define TEST_FLOAT_EQ(v1, v2, eps) (fabsf((v1) - (v2)) < (eps))
+
+#define EPS_TEST 1e-5
+
 #endif
