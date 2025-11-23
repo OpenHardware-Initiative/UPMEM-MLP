@@ -1,5 +1,7 @@
 #include <mram.h>
 #include <defs.h>
+#include <perfcounter.h>
+#include <stdio.h>
 #include "upmem.h"
 
 __mram_noinit float A_chunk[TILE_SIZE * TILE_SIZE];
@@ -10,6 +12,8 @@ __host dpu_args_t DPU_INPUT_ARGS;
 
 int main()
 {
+    perfcounter_config(COUNT_CYCLES, false);
+
     dpu_args_t dpu_input_args = DPU_INPUT_ARGS;
     uint32_t rows_a = dpu_input_args.rows_a;
     uint32_t cols_a = dpu_input_args.cols_a;
@@ -17,6 +21,8 @@ int main()
     
     if(!rows_a)
         return 0;
+
+    perfcounter_t cc_start = perfcounter_get();
 
     int chunk = rows_a / NR_TASKLETS;
     int row_start = chunk * me();
@@ -30,6 +36,11 @@ int main()
             C_chunk[i * cols_b + j] = sum;
         }
     }
+
+    perfcounter_t cc_end = perfcounter_get();
+
+    if(me() == 0)
+        printf("DPU completed in %ld cycles\n", cc_end-cc_start);
     
     return 0;
 }

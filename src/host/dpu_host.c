@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <dpu.h>
+#include <dpu_log.h>
 #include <x86intrin.h>
 #include "upmem.h"
 
@@ -114,6 +115,10 @@ void process_tile_upmem(const float *A, const float *B, float *C, int rows_a, in
     }
 
     DPU_ASSERT(dpu_launch(dpus, DPU_SYNCHRONOUS));
+
+    DPU_FOREACH(dpus, dpu) {
+        DPU_ASSERT(dpu_log_read(dpu, stdout));
+    }
 
     dpu_idx = 0;
     DPU_FOREACH(dpus, dpu) {
