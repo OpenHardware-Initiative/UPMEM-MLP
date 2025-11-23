@@ -46,6 +46,12 @@ int main()
     free_uint8_matrix(sample_data, sample_rows);
     free_uint8_matrix(label_data, label_rows);
 
+#ifdef UPMEM
+    printf("Run in UPMEM mode with BATCH_SIZE=%d, NUM_TRAIN_SAMPLES=%d, MAX_EPOCH=%d\n\n", BATCH_SIZE, NUM_TRAIN_SAMPLES, MAX_EPOCH);
+#else
+    printf("Run in HOST mode with BATCH_SIZE=%d, NUM_TRAIN_SAMPLES=%d, MAX_EPOCH=%d\n\n", BATCH_SIZE, NUM_TRAIN_SAMPLES, MAX_EPOCH);
+#endif
+
 #ifdef DEBUG
     // print samples & labels to check if all is saved correctly into program memory
     printf("===== Samples =====\n\n");
