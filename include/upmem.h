@@ -8,11 +8,11 @@
 #endif
 
 #ifndef NUM_DPU
-#define NUM_DPU 8
+#define NUM_DPU 32
 #endif
 
 #ifndef TILE_SIZE
-#define TILE_SIZE 32
+#define TILE_SIZE 512
 #endif
 
 typedef struct {
