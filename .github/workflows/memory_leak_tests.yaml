@@ -27,7 +27,7 @@ jobs:
       - name: Compile MLP without sanitizer or UPMEM
         run: |
           source /usr/local/bin/upmem-2024.2.0-Linux-x86_64/upmem_env.sh simulator
-          make SAN=0 UPMEM=0
+          make BATCH_SIZE=2 MAX_EPOCH=1 NUM_TRAIN_SAMPLES=8 SAN=0 UPMEM=0
 
       - name: Run Valgrind
         run: | 
@@ -50,7 +50,7 @@ jobs:
         run: |
           source /usr/local/bin/upmem-2024.2.0-Linux-x86_64/upmem_env.sh simulator
           make clean
-          make SAN=1 UPMEM=1
+          make BATCH_SIZE=2 MAX_EPOCH=1 NUM_TRAIN_SAMPLES=8 SAN=1 UPMEM=1
 
       - name: Run with sanitizer
         run: |
