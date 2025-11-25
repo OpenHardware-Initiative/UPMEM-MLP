@@ -17,8 +17,8 @@ int test_multiply_matrix()
     float matrixC[2*2];
     float matrixD[2*2];
     for(int i=0; i<2*2; i++) {
-        matrixC[i] = ((float)rand() / (float)RAND_MAX) * 20;
-        matrixD[i] = ((float)rand() / (float)RAND_MAX) * 20;
+        matrixC[i] = frand() * 20;
+        matrixD[i] = frand() * 20;
     }
     
     // ideal result
@@ -53,7 +53,7 @@ int test_transpose_matrix()
     // result matrix (initialized with random float values [0.0, 20.0])
     float matrixT[3*2];
     for(int i=0; i<3*2; i++) {
-        matrixT[i] = ((float)rand() / (float)RAND_MAX) * 20;
+        matrixT[i] = frand() * 20;
     }
 
     // ideal result

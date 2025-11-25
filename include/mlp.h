@@ -52,7 +52,7 @@ typedef struct {
 
 void accumulate_layer_gradients(LAYER *l, int batch_size, float learning_rate);
 void apply_gradients(NETWORK *n, int batch_size);
-float drand();
+float frand();
 float get_activation(float x);
 float get_activation_derivative(float x);
 float *get_delta(NETWORK *n, float *samples, float *ideal, int layer_index);

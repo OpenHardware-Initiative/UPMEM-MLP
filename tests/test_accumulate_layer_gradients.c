@@ -13,7 +13,7 @@ int test_accumulate_layer_gradients()
 
     // inputs is 1x5 matrix
     for(int i=0; i<1*5; i++)
-        first_layer->inputs[i] = ((float) rand() / (float) RAND_MAX) * 20;
+        first_layer->inputs[i] = frand() * 20;
 
     // deltas is a 1x4 identity matrix
     for(int i=0; i<1*4; i++)

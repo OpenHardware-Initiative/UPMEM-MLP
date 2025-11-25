@@ -34,7 +34,7 @@ NEURON *init_neuron(int num_weights)
 
     for(int i=0; i<num_weights; i++)
     {
-        float rand_unit = (float)rand() / (float)RAND_MAX;
+        float rand_unit = frand();
         n->w[i] = (rand_unit * 2.0 - 1.0) * limit;
         n->lw[i] = n->w[i];
         n->batch_dw[i] = 0;

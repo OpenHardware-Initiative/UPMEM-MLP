@@ -1,6 +1,6 @@
 #include "mlp.h"
 
-float drand()
+float frand()
 {
     return (float)rand()/(float)RAND_MAX;
 }
