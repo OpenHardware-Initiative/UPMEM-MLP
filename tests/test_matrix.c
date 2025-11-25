@@ -64,7 +64,7 @@ int test_transpose_matrix()
     transpose_matrix(matrixA, matrixT, 2, 3);
 
     for(int i=0; i<2*3; i++) {
-        test_result_pass_fail |= matrixT[i] == matrixR[i];
+        test_result_pass_fail &= matrixT[i] == matrixR[i];
     }
 
     return test_result_pass_fail;
@@ -74,8 +74,8 @@ int main()
 {
     int test_pass_fail = 1;
 
-    test_pass_fail |= test_multiply_matrix();
-    test_pass_fail |= test_transpose_matrix();
+    test_pass_fail &= test_multiply_matrix();
+    test_pass_fail &= test_transpose_matrix();
 
     TEST_PASS_FAIL(test_pass_fail)
 }
