@@ -5,7 +5,7 @@ BATCH_SIZE ?= 20
 MAX_EPOCH ?= 10
 NUM_TRAIN_SAMPLES ?= 200
 
-CFLAGS += -std=c99 -Iinclude -D_GNU_SOURCE -DVERBOSE -DDEBUG
+CFLAGS += -std=c99 -Iinclude -D_GNU_SOURCE
 CFLAGS += -DBATCH_SIZE=$(BATCH_SIZE) -DMAX_EPOCH=$(MAX_EPOCH) -DNUM_TRAIN_SAMPLES=$(NUM_TRAIN_SAMPLES)
 
 BUILD_DIR = build/
@@ -23,6 +23,16 @@ endif
 EVAL ?= 0
 ifeq ($(EVAL), 1)
 	CFLAGS += -DEVAL
+endif
+
+VERBOSE ?= 0
+ifeq ($(VERBOSE), 1)
+	CFLAGS += -DVERBOSE
+endif
+
+DEBUG ?= 0
+ifeq ($(DEBUG), 1)
+	CFLAGS += -DDEBUG
 endif
 
 all: clean
