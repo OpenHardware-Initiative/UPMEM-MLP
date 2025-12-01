@@ -25,17 +25,17 @@ jobs:
       - name: Run CMake
         working-directory: build
         run: |
-          source /usr/local/bin/upmem-2024.2.0-Linux-x86_64/upmem_env.sh
+          source /usr/local/bin/upmem-2025.1.0-Linux-x86_64/upmem_env.sh
           cmake ..
 
       - name: Build
         working-directory: build
         run: |
-          source /usr/local/bin/upmem-2024.2.0-Linux-x86_64/upmem_env.sh
+          source /usr/local/bin/upmem-2025.1.0-Linux-x86_64/upmem_env.sh
           make
 
       - name: Run the tests
         working-directory: build
         run: |
-          source /usr/local/bin/upmem-2024.2.0-Linux-x86_64/upmem_env.sh
+          source /usr/local/bin/upmem-2025.1.0-Linux-x86_64/upmem_env.sh
           make test
